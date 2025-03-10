@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, query, where } from "firebase/firestore";
 import { db } from "../../firebase.config";
 
 //GET ALL USERS
@@ -48,7 +48,8 @@ export const getUserById = async (userId) => {
 export const getUserByUID = async (userUID) => {
   try {
     const usersRef = collection(db, 'user');
-    const snapshot = await getDocs(usersRef);
+    const q = query(usersRef, where('userUID', '==', userUID));
+    const snapshot = await getDocs(q);
     let userData = null;
 
     if (snapshot.empty) {
@@ -58,9 +59,7 @@ export const getUserByUID = async (userUID) => {
 
     snapshot.forEach(doc => {
       const data = doc.data();
-      if (data.userUID === userUID) {
-        userData = { id: doc.id, ...data };
-      }
+      userData = { id: doc.id, ...data };
     });
 
     return userData;

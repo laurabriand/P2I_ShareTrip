@@ -1,17 +1,21 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { postUser } from "./userServices";
 
 //SIGNUP
-export function SignUp(email, password) {
+export function SignUp(email, password, userName) {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed up 
       const user = userCredential.user;
       console.log('Utilisateur inscrit :', user.email);
-    })
+      return postUser({ userName: userName.trim(), email, userUID: user.uid, createdAt: new Date() })
+        .then(() => user); })
     .catch((error) => {
+      console.error('Erreur lors de l\'inscription :', error);
       throw error;
     });
+  
 }
 
 //SIGNIN

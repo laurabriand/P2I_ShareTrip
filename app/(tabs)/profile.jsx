@@ -4,7 +4,8 @@ import { useFonts } from 'expo-font';
 import { getAuth } from 'firebase/auth';
 import { SignOut } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
-//import { getUserByUID } from '../lib/userServices';
+import { getUserByUID } from '../lib/userServices';
+import { useState, useEffect } from 'react';
 
 const Profile = () => {
   const [fontsLoaded] = useFonts({
@@ -15,14 +16,34 @@ const Profile = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const navigation = useNavigation();
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  //const userUID = getUserByUID(user.uid);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (user?.uid) {
+        try {
+          const userData = await getUserByUID(user.uid);
+          setUserInfo(userData);
+        } catch (err) {
+          setError('Erreur lors de la récupération des informations utilisateur');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [user]);
 
   const handleDisconnect = async () => {
     await SignOut();
     navigation.navigate('firstScreen');
     console.log('Déconnexion');
   };
+
 
   return (
     <View style={styles.container}>
@@ -32,8 +53,8 @@ const Profile = () => {
       </View>
       <View style={styles.content}>
         <Text style={styles.title}>MON PROFIL</Text>
-        {/* <Text style={styles.label}>Mon nom d'utilisateur :</Text>
-        <Text style={styles.info}>{userUID?.userName ?? 'User name non disponible'}</Text> */}
+        <Text style={styles.label}>Mon nom d'utilisateur :</Text>
+        <Text style={styles.info}>{userInfo?.userName ?? 'User name non disponible'}</Text>
         <Text style={styles.label}>Mon adresse mail :</Text>
         <Text style={styles.info}>{user?.email ?? 'Email non disponible'}</Text>
         <TouchableOpacity style={styles.secondButton} onPress={handleDisconnect}>

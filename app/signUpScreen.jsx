@@ -27,7 +27,7 @@ const SignUpScreen = () => {
             return;
         }
         try {
-            await SignUp(email, password);
+            await SignUp(email, password, userName);
             console.log('Email:', email);
             console.log('Password:', password);
             // const auth = getAuth();
