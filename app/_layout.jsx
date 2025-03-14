@@ -4,7 +4,7 @@ import { useAuth } from "./hooks/useAuth";
 
 
 export default function RootLayout() {
-  const { user } = useAuth()||{};
+  const { user } = useAuth() || {};
   const router = useRouter();
   useEffect(() => {
     if (!user) {
@@ -13,14 +13,12 @@ export default function RootLayout() {
   }, [user]);
 
   return (
-
-  <Stack>
-  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-  <Stack.Screen name="+not-found" />
-  <Stack.Screen name="logInScreen" options={{ headerShown: false }}/>
-  <Stack.Screen name="signUpScreen" options={{ headerShown: false }}/>
-  <Stack.Screen name="firstScreen" options={{ headerShown: false }}/>
-  </Stack>
-
-);
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="logInScreen" options={{ headerShown: false }} />
+      <Stack.Screen name="signUpScreen" options={{ headerShown: false }} />
+      <Stack.Screen name="firstScreen" options={{ headerShown: false }} />
+    </Stack>
+  );
 }

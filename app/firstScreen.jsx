@@ -1,5 +1,5 @@
 
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 
@@ -22,7 +22,7 @@ const FirstScreen = () => {
             <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={() => navigation.navigate('signUpScreen')}>
                 <Text style={styles.buttonText}>Inscription</Text>
             </TouchableOpacity>
-            
+
         </View>
     );
 };
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         alignSelf: 'center',
-    },  
+    },
     button: {
         backgroundColor: '#5A439A',
         paddingVertical: 12,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     signUpButton: {
-        backgroundColor: '#9B7EDC', 
+        backgroundColor: '#9B7EDC',
     },
     buttonText: {
         color: '#FFFFFF',
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'center',
     },
-   
+
 });
 export default FirstScreen;

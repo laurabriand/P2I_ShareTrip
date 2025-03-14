@@ -22,7 +22,8 @@ export default function TabLayout() {
       options={{
         title: 'Archive',
         tabBarIcon: ({ color, size }) => (
-          <Icon name="archive-outline" color={color} size={size} />)
+          <Icon name="archive-outline" color={color} size={size} />),
+        headerShown: false
       }}
     />
 
@@ -38,3 +39,4 @@ export default function TabLayout() {
     />
   </Tabs>
 }
+

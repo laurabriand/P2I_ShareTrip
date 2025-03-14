@@ -61,7 +61,6 @@ export const getUserByUID = async (userUID) => {
       const data = doc.data();
       userData = { id: doc.id, ...data };
     });
-
     return userData;
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur :", error);

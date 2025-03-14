@@ -14,9 +14,7 @@ export const getProjects = async () => {
   
     snapshot.forEach(doc => {
       const projectData = doc.data();
-      if (projectData.destination) {
-        projects.push(projectData.destination); 
-      }
+      projects.push({ id: doc.id, ...projectData }); 
     });
   
     return projects;

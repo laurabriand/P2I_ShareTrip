@@ -4,9 +4,7 @@ import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
-
-
-const Project = ({ project }) => {
+const projectDetails = ({ project }) => {
     const [fontsLoaded] = useFonts({
         'Knewave-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Knewave-Regular.ttf'),
         'LilitaOne-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/LilitaOne-Regular.ttf'),
@@ -26,11 +24,15 @@ const Project = ({ project }) => {
         <TouchableOpacity style={styles.container} >
             <View style={styles.destination}>
                 <Text style={styles.label}>{project.destination}</Text>
-                <Icon name="chevron-down-outline" size={30} style={styles.icon1} />
+                <Icon name="chevron-up-outline" size={30} style={styles.icon1} />
             </View>
             <View style={styles.time}>
                 <Icon name="today-outline" size={37} color={'#5A439A'} style={styles.icon2} />
                 <Text style={styles.date}>du {formatDate(project.startDate)} au {formatDate(project.endDate)}</Text>
+            </View>
+            <View>
+                <Icon name="people" size={37} color={'#5A439A'} style={styles.icon2} />
+                <Text style={styles.people}>Participants :</Text>
             </View>
         </TouchableOpacity>
     )
@@ -40,9 +42,8 @@ const styles = StyleSheet.create({
     container: {
         flexShrink: 0,
         width: 380,
-        height: 105,
+        height: 600,
         borderRadius: 40,
-        alignItems: 'center',
         backgroundColor: '#FFFFFF',
         marginBottom: 20,
     },
@@ -51,11 +52,11 @@ const styles = StyleSheet.create({
         width: 320,
         height: 32,
         borderRadius: 10,
-        flexShrink: 0,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
         position: 'relative',
+        marginHorizontal: 30,
         backgroundColor: 'rgba(218, 231, 255, 0.48)',
     },
     label: {
@@ -70,21 +71,29 @@ const styles = StyleSheet.create({
         right: 10,
     },
     icon2: {
-        marginLeft: -70,
+        position: 'absolute',
+        marginRight: 10,
+        left: 20,
     },
     date: {
         fontFamily: 'Convergence-Regular',
         fontSize: 22,
-        marginLeft: 15,
+        marginTop: 5,
+        marginLeft: 70,
     },
     time: {
         flexDirection: 'row',
         flexShrink: 0,
         alignItems: 'center',
-        justifyContent: 'center',
         marginTop: 10,
         marginBottom: 19,
     },
+    people: {
+        fontFamily: 'LilitaOne-Regular',
+        fontSize: 22,
+        marginTop: 5,
+        marginLeft: 70,
+    },
 });
 
-export default Project;
+export default projectDetails;

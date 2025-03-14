@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
-import ProjectList from "../components/projectList";
+import ProjectDetails from "../components/projectDetails";
 import Project from "../components/project";
+import React, { useEffect, useState } from 'react';
+import { getProjects } from "../lib/projectServices";
+import { useRouter } from 'expo-router';
 
 export default function Index() {
   const [fontsLoaded] = useFonts({
@@ -12,6 +15,16 @@ export default function Index() {
   });
   const navigation = useNavigation();
 
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const projectsData = await getProjects();
+      setProjects(projectsData);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -19,14 +32,12 @@ export default function Index() {
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
       <ScrollView contentContainerStyle={styles.content}>
-        <Project />
-        <Project />
-        <Project />
-        <Project />
-        <Project />
-        <Project />
-        <Project />
-        <Project />
+        {projects.map((project) => (
+          <Project key={project.id} project={project} />
+        ))}
+        {projects.map((project) => (
+          <ProjectDetails key={project.id} project={project} />
+        ))}
       </ScrollView>
       <TouchableOpacity style={styles.button} >
         <Text style={styles.buttonText}>Créer un projet</Text>
