@@ -19,6 +19,7 @@ export default function RootLayout() {
       <Stack.Screen name="logInScreen" options={{ headerShown: false }} />
       <Stack.Screen name="signUpScreen" options={{ headerShown: false }} />
       <Stack.Screen name="firstScreen" options={{ headerShown: false }} />
+
     </Stack>
   );
 }

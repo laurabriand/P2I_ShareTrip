@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import { getUserById } from '../lib/userServices';
+import { getSuggestionById } from '../lib/suggestionServices';
+
+
 
 const projectDetails = ({ project }) => {
     const [fontsLoaded] = useFonts({
@@ -18,23 +22,111 @@ const projectDetails = ({ project }) => {
         return `${day}/${month}`;
     };
 
+    const [userNames, setUserNames] = useState([]);
+    useEffect(() => {
+        const fetchUserNames = async () => {
+
+            const names = await Promise.all(
+                project.users.map(async (id) => {
+                    try {
+                        const user = await getUserById(id.trim());
+                        return user?.userName || id;
+                    } catch (error) {
+                        console.error(`Erreur lors de la récupération de l'utilisateur avec l'ID ${id}:`, error);
+                        return id;
+                    }
+                })
+            );
+
+            setUserNames(names);
+        };
+
+        fetchUserNames();
+    }, [project.users]);
+
+    const [activityNames, setActivityNames] = useState([]);
+    useEffect(() => {
+        const fetchActivityNames = async () => {
+
+            const activities = await Promise.all(
+                project.activities.map(async (id) => {
+                    try {
+                        const activity = await getSuggestionById(id.trim());
+                        return activity?.suggestionName || id;
+                    } catch (error) {
+                        console.error(`Erreur lors de la récupération de l'activité avec l'ID ${id}:`, error);
+                        return id;
+                    }
+                })
+            );
+
+            setActivityNames(activities);
+        };
+
+        fetchActivityNames();
+    }, [project.activities]);
+
     const navigation = useNavigation();
 
     return (
-        <TouchableOpacity style={styles.container} >
-            <View style={styles.destination}>
+        <View style={styles.container} >
+            <TouchableOpacity style={styles.destination}>
                 <Text style={styles.label}>{project.destination}</Text>
                 <Icon name="chevron-up-outline" size={30} style={styles.icon1} />
-            </View>
+            </TouchableOpacity>
             <View style={styles.time}>
                 <Icon name="today-outline" size={37} color={'#5A439A'} style={styles.icon2} />
                 <Text style={styles.date}>du {formatDate(project.startDate)} au {formatDate(project.endDate)}</Text>
             </View>
-            <View>
+            <View style={styles.participantsContainer}>
                 <Icon name="people" size={37} color={'#5A439A'} style={styles.icon2} />
                 <Text style={styles.people}>Participants :</Text>
+                <View style={styles.scrollBox}>
+                    <ScrollView>
+                        {userNames && userNames.length > 0 ? (
+                            userNames.map((name, index) => (
+                                <Text key={index} style={styles.userText}>
+                                    • {name}
+                                </Text>
+                            ))
+                        ) : (
+                            <Text style={styles.userTextItalic}>Aucun participant</Text>
+                        )}
+                    </ScrollView>
+                </View>
             </View>
-        </TouchableOpacity>
+            <View style={styles.activitiesContainer}>
+                <Icon name="clipboard" size={32} color={'#5A439A'} style={styles.icon2} />
+                <Text style={styles.people}>Activitiés :</Text>
+                <View style={styles.scrollBox}>
+                    <ScrollView>
+                        {activityNames && activityNames.length > 0 ? (
+                            activityNames.map((name, index) => (
+                                <Text key={index} style={styles.userText}>
+                                    • {name}
+                                </Text>
+                            ))
+                        ) : (
+                            <Text style={styles.userTextItalic}>Aucune activité</Text>
+                        )}
+                    </ScrollView>
+                </View>
+            </View>
+            <View style={styles.manageButtonsContainer}>
+                <TouchableOpacity style={styles.manageButton} onPress={() => navigation.navigate('Activities')}>
+                    <Icon name="clipboard-outline" size={50} color="#5A439A" />
+                    <Text style={styles.manageButtonText}>Gestion des activités</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.manageButton} onPress={() => console.log('Gestion participants')}>
+                    <Icon name="people-outline" size={50} color="#5A439A" />
+                    <Text style={styles.manageButtonText}>Gestion des participants</Text>
+                </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.secondButton} >
+                <Text style={styles.secondButtonText}>Créer un lien de partage</Text>
+            </TouchableOpacity>
+        </View>
     )
 };
 
@@ -86,7 +178,7 @@ const styles = StyleSheet.create({
         flexShrink: 0,
         alignItems: 'center',
         marginTop: 10,
-        marginBottom: 19,
+        marginBottom: 8,
     },
     people: {
         fontFamily: 'LilitaOne-Regular',
@@ -94,6 +186,84 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 70,
     },
+    secondButton: {
+        backgroundColor: '#9B7EDC',
+        paddingVertical: 5,
+        paddingHorizontal: 40,
+        borderRadius: 60,
+        width: 350,
+        height: 40,
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginTop: 10,
+        position: 'absolute',
+        bottom: 15,
+    },
+    secondButtonText: {
+        color: '#FFFFFF',
+        fontFamily: 'LilitaOne-Regular',
+        fontSize: 25,
+        textAlign: 'center',
+        alignSelf: 'center',
+    },
+    participantsContainer: {
+        marginTop: 5,
+    },
+
+    activitiesContainer: {
+        marginTop: 10,
+    },
+
+    scrollBox: {
+        maxHeight: 100,
+        marginTop: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        borderRadius: 10,
+        backgroundColor: 'rgba(218, 231, 255, 0.48)',
+    },
+
+    userText: {
+        fontFamily: 'Convergence-Regular',
+        fontSize: 18,
+        marginBottom: 4,
+        marginTop: 4,
+        marginLeft: 10,
+    },
+
+    userTextItalic: {
+        fontFamily: 'Convergence-Regular',
+        fontSize: 16,
+        fontStyle: 'italic',
+    },
+    manageButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 20,
+        paddingHorizontal: 10,
+    },
+
+    manageButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 150,
+        height: 120,
+        backgroundColor: 'rgba(218, 231, 255, 0.48)',
+        borderRadius: 20,
+        borderWidth: 3,
+        borderColor: 'rgba(218, 231, 255, 1)',
+        padding: 10,
+    },
+
+    manageButtonText: {
+        fontFamily: 'LilitaOne-Regular',
+        fontSize: 17,
+        textAlign: 'center',
+        marginTop: 5,
+        color: '#5A439A',
+    },
+
+
 });
 
 export default projectDetails;

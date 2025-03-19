@@ -31,14 +31,16 @@ export default function Index() {
         <Image source={require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/images/ShareTripLogo.png')} style={styles.image} />
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
-      <ScrollView contentContainerStyle={styles.content}>
-        {projects.map((project) => (
+      <View style={styles.content}>
+        <ScrollView scrollIndicatorInsets={{ right: -5 }}>
+          {/* {projects.map((project) => (
           <Project key={project.id} project={project} />
-        ))}
-        {projects.map((project) => (
-          <ProjectDetails key={project.id} project={project} />
-        ))}
-      </ScrollView>
+        ))} */}
+          {projects.map((project) => (
+            <ProjectDetails key={project.id} project={project} />
+          ))}
+        </ScrollView>
+      </View>
       <TouchableOpacity style={styles.button} >
         <Text style={styles.buttonText}>Créer un projet</Text>
       </TouchableOpacity>

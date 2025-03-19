@@ -23,7 +23,7 @@ export const getSuggestions = async () => {
 };
 
 // GET suggestion (ID)
-export const getsuggestionById = async (suggestionId) => {
+export const getSuggestionById = async (suggestionId) => {
   try {
     // Référence du document avec l'ID spécifié
     const suggestionRef = doc(db, 'suggestions', suggestionId);
@@ -86,4 +86,4 @@ export const deleteSuggestion = async (suggestionId) => {
   }
 }
 
-export default { getSuggestions, getsuggestionById, postSuggestion, putSuggestion, deleteSuggestion };
+export default { getSuggestions, getSuggestionById, postSuggestion, putSuggestion, deleteSuggestion };
