@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Share } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getUserById } from '../lib/userServices';
 import { getSuggestionById } from '../lib/suggestionServices';
-
+import * as Linking from 'expo-linking';
 
 
 const projectDetails = ({ project }) => {
@@ -66,6 +66,34 @@ const projectDetails = ({ project }) => {
         fetchActivityNames();
     }, [project.activities]);
 
+    const handleShare = async () => {
+        console.log("Partage en cours...");
+        try {
+            // Créez un deeplink vers la page du projet
+            const deepLink = Linking.createURL(`/project/${project.id}`, {
+                queryParams: {
+                    name: project.destination,
+                },
+            });
+
+            // Utilisez le partage natif pour partager le lien
+            const result = await Share.share({
+                message: `Rejoignez le projet "${project.destination}" sur ShareTrip ! Cliquez ici pour en savoir plus : ${deepLink}`,
+            });
+
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    console.log('Partagé avec une activité spécifique');
+                } else {
+                    console.log('Partagé');
+                }
+            } else if (result.action === Share.dismissedAction) {
+                console.log('Partage annulé');
+            }
+        } catch (error) {
+            console.error('Erreur lors du partage :', error);
+        }
+    };
 
     const router = useRouter();
 
@@ -124,8 +152,8 @@ const projectDetails = ({ project }) => {
                     <Text style={styles.manageButtonText}>Gestion des participants</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.secondButton} >
-                <Text style={styles.secondButtonText}>Créer un lien de partage</Text>
+            <TouchableOpacity style={styles.secondButton} onPress={handleShare}>
+                <Text style={styles.secondButtonText} >Créer un lien de partage</Text>
             </TouchableOpacity>
         </View>
     )
