@@ -16,10 +16,10 @@ const FirstScreen = () => {
         <View style={styles.container}>
             <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
             <Text style={styles.title}>ShareTrip</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('logInScreen')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('auth/logInScreen')}>
                 <Text style={styles.buttonText}>Se connecter</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={() => navigation.navigate('signUpScreen')}>
+            <TouchableOpacity style={[styles.button, styles.signUpButton]} onPress={() => navigation.navigate('auth/signUpScreen')}>
                 <Text style={styles.buttonText}>Inscription</Text>
             </TouchableOpacity>
 

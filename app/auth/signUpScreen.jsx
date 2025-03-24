@@ -1,54 +1,50 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { SignIn } from './lib/auth';
+import { SignUp } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { AuthProvider, useAuth } from '../app/hooks/useAuth';
+import { postUser } from '../lib/userServices';
+import { getAuth } from 'firebase/auth';
 
-
-const LogInScreen = () => {
-    const navigation = useNavigation();
+const SignUpScreen = () => {
+    const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-    });
+    const navigation = useNavigation();
 
-    const handleLogin = async () => {
+    const handleSubmit = async () => {
+
         setLoading(true);
         setError('');
+        if (!userName || !email || !password || !confirmPassword) {
+            setError("Veuillez remplir tous les champs");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError("Les mots de passe ne correspondent pas");
+            return;
+        }
         try {
-            if (!email || !password) {
-                setError("Veuillez remplir tous les champs");
-                setLoading(false);
-                return;
-            }
-            await SignIn(email, password);
-            navigation.navigate('(tabs)');
+            await SignUp(email, password, userName);
             console.log('Email:', email);
             console.log('Password:', password);
-        } catch (error) {
-            console.error(error);
-            if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-                setError('Email ou mot de passe incorrect');
-            } else if (err.code === 'auth/too-many-requests') {
-                setError('Trop de tentatives de connexion. Veuillez réessayer plus tard.');
-            } else {
-                setError('Échec de la connexion. Veuillez réessayer.');
-            }
-            setLoading(false);
+            // const auth = getAuth();
+            // const user = auth.currentUser;
+            // const userUID = user.uid;
+            // postUser({ userName, email, userUID, createdAt: new Date() });
+            navigation.navigate('(tabs)');
+        } catch (err) {
+            console.error('Erreur lors de l inscription :', err);
+            setError('Échec de l inscription. Veuillez réessayer.');
         }
     };
 
-
     return (
-
         <View style={styles.container}>
             <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
-            <Text style={styles.title}>CONNEXION</Text>
+            <Text style={styles.title}>INSCRIPTION</Text>
             <Text style={styles.label}>Entrez votre adresse mail :</Text>
             <TextInput
                 style={styles.input}
@@ -56,6 +52,14 @@ const LogInScreen = () => {
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
+                autoCapitalize="none"
+            />
+            <Text style={styles.label}>Entrez votre nom d'utilisateur :</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Nom d'utilisateur"
+                value={userName}
+                onChangeText={setUserName}
                 autoCapitalize="none"
             />
             <Text style={styles.label}>Entrez votre mot de passe :</Text>
@@ -66,16 +70,23 @@ const LogInScreen = () => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
+            <Text style={styles.label}>Confirmez votre mot de passe :</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Mot de passe"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                secureTextEntry
+            />
             {error ? <Text style={styles.error}>{error}</Text> : null}
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Se connecter</Text>
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <Text style={styles.buttonText}>S'inscrire</Text>
             </TouchableOpacity>
-            <Text style={styles.message}>Pas encore de compte ?</Text>
-            <TouchableOpacity style={styles.secondButton} onPress={() => navigation.navigate('signUpScreen')}>
-                <Text style={styles.secondButtonText}>Inscrivez-vous</Text>
+            <Text style={styles.message}>Déjà inscrit ?</Text>
+            <TouchableOpacity style={styles.secondButton} onPress={() => navigation.navigate('auth/logInScreen')}>
+                <Text style={styles.secondButtonText}>Se connecter</Text>
             </TouchableOpacity>
         </View>
-
     );
 };
 
@@ -128,7 +139,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         marginTop: 40,
-        marginBottom: 70,
     },
     buttonText: {
         color: '#FFFFFF',
@@ -168,5 +178,4 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
 });
-
-export default LogInScreen;
+export default SignUpScreen;

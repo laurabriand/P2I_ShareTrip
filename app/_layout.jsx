@@ -8,7 +8,7 @@ export default function RootLayout() {
   const router = useRouter();
   useEffect(() => {
     if (!user) {
-      router.push("/firstScreen"); // Redirection si non connecté
+      router.push("auth/firstScreen"); // Redirection si non connecté
     }
   }, [user]);
 
@@ -16,10 +16,9 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
-      <Stack.Screen name="logInScreen" options={{ headerShown: false }} />
-      <Stack.Screen name="signUpScreen" options={{ headerShown: false }} />
-      <Stack.Screen name="firstScreen" options={{ headerShown: false }} />
-
+      <Stack.Screen name="auth/logInScreen" options={{ headerShown: false }} />
+      <Stack.Screen name="auth/signUpScreen" options={{ headerShown: false }} />
+      <Stack.Screen name="auth/firstScreen" options={{ headerShown: false }} />
     </Stack>
   );
 }

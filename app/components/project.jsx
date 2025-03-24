@@ -8,9 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const Project = ({ project }) => {
     const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/LilitaOne-Regular.ttf'),
-        'Convergence-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Convergence-Regular.ttf'),
+        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
+        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+        'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
     });
 
     const formatDate = (ts) => {

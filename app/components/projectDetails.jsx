@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-nati
 import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { getUserById } from '../lib/userServices';
 import { getSuggestionById } from '../lib/suggestionServices';
 
@@ -10,9 +10,9 @@ import { getSuggestionById } from '../lib/suggestionServices';
 
 const projectDetails = ({ project }) => {
     const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/LilitaOne-Regular.ttf'),
-        'Convergence-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Convergence-Regular.ttf'),
+        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
+        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+        'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
     });
 
     const formatDate = (ts) => {
@@ -66,7 +66,8 @@ const projectDetails = ({ project }) => {
         fetchActivityNames();
     }, [project.activities]);
 
-    const navigation = useNavigation();
+
+    const router = useRouter();
 
     return (
         <View style={styles.container} >
@@ -113,12 +114,12 @@ const projectDetails = ({ project }) => {
                 </View>
             </View>
             <View style={styles.manageButtonsContainer}>
-                <TouchableOpacity style={styles.manageButton} onPress={() => navigation.navigate('Activities')}>
+                <TouchableOpacity style={styles.manageButton} onPress={() => router.push('/activities')}>
                     <Icon name="clipboard-outline" size={50} color="#5A439A" />
                     <Text style={styles.manageButtonText}>Gestion des activités</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.manageButton} onPress={() => console.log('Gestion participants')}>
+                <TouchableOpacity style={styles.manageButton} onPress={() => router.push('/participants')}>
                     <Icon name="people-outline" size={50} color="#5A439A" />
                     <Text style={styles.manageButtonText}>Gestion des participants</Text>
                 </TouchableOpacity>
@@ -208,10 +209,12 @@ const styles = StyleSheet.create({
     },
     participantsContainer: {
         marginTop: 5,
+
     },
 
     activitiesContainer: {
         marginTop: 10,
+
     },
 
     scrollBox: {

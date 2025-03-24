@@ -9,9 +9,9 @@ import { useState, useEffect } from 'react';
 
 const Profile = () => {
   const [fontsLoaded] = useFonts({
-    'Knewave-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Knewave-Regular.ttf'),
-    'LilitaOne-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/LilitaOne-Regular.ttf'),
-    'Convergence-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Convergence-Regular.ttf'),
+    'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
+    'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+    'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
   });
   const auth = getAuth();
   const user = auth.currentUser;
@@ -40,7 +40,7 @@ const Profile = () => {
 
   const handleDisconnect = async () => {
     await SignOut();
-    navigation.navigate('firstScreen');
+    navigation.navigate('auth/firstScreen');
     console.log('Déconnexion');
   };
 
@@ -48,7 +48,7 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Image source={require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/images/ShareTripLogo.png')} style={styles.image} />
+        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
       <View style={styles.content}>

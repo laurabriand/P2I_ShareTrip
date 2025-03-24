@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "rea
 import React from 'react'
 
 
-export default function Activities() {
+export default function Participants() {
     return (
         <View style={styles.container}>
             <View style={styles.row}>
@@ -10,7 +10,7 @@ export default function Activities() {
                 <Text style={styles.shareTrip}>ShareTrip</Text>
             </View>
             <View Style={styles.content}>
-                <Text>Activités</Text>
+                <Text>Participants</Text>
             </View>
         </View>
     )

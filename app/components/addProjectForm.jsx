@@ -3,7 +3,6 @@ import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { postProject } from '../lib/projectServices';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
-import { ScrollView } from 'react-native-gesture-handler';
 import firebase from 'firebase/compat/app';
 
 

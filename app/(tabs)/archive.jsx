@@ -5,7 +5,7 @@ export default function Archive() {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Image source={require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/images/ShareTripLogo.png')} style={styles.image} />
+        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
       <View Style={styles.content}>

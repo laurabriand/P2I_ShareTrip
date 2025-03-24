@@ -2,16 +2,15 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "rea
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 import ProjectDetails from "../components/projectDetails";
-import Project from "../components/project";
 import React, { useEffect, useState } from 'react';
 import { getProjects } from "../lib/projectServices";
 import { useRouter } from 'expo-router';
 
 export default function Index() {
   const [fontsLoaded] = useFonts({
-    'Knewave-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Knewave-Regular.ttf'),
-    'LilitaOne-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/LilitaOne-Regular.ttf'),
-    'Convergence-Regular': require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/fonts/Convergence-Regular.ttf'),
+    'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
+    'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
+    'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
   });
   const navigation = useNavigation();
 
@@ -28,7 +27,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Image source={require('/Users/laura/Desktop/ShareTrip/ShareTrip/assets/images/ShareTripLogo.png')} style={styles.image} />
+        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
       <View style={styles.content}>
