@@ -2,8 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-
+import { useRouter } from 'expo-router';
 
 
 const Project = ({ project }) => {
@@ -20,13 +19,14 @@ const Project = ({ project }) => {
         return `${day}/${month}`;
     };
 
-    const navigation = useNavigation();
-
+    const router = useRouter();
+    const handleNavigation = () => {
+        router.push(`/project/${project.id}`); // Navigue vers la page du projet avec l'ID
+    };
     return (
-        <TouchableOpacity style={styles.container} >
+        <TouchableOpacity style={styles.container} onPress={handleNavigation}>
             <View style={styles.destination}>
                 <Text style={styles.label}>{project.destination}</Text>
-                <Icon name="chevron-down-outline" size={30} style={styles.icon1} />
             </View>
             <View style={styles.time}>
                 <Icon name="today-outline" size={37} color={'#5A439A'} style={styles.icon2} />
@@ -39,7 +39,7 @@ const Project = ({ project }) => {
 const styles = StyleSheet.create({
     container: {
         flexShrink: 0,
-        width: 380,
+        width: '100%',
         height: 105,
         borderRadius: 40,
         alignItems: 'center',
@@ -48,13 +48,13 @@ const styles = StyleSheet.create({
     },
     destination: {
         flexDirection: 'row',
-        width: 320,
-        height: 32,
+        width: '85%',
+        height: '30%',
         borderRadius: 10,
         flexShrink: 0,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
+        marginTop: '2%',
         position: 'relative',
         backgroundColor: 'rgba(218, 231, 255, 0.48)',
     },
@@ -70,20 +70,19 @@ const styles = StyleSheet.create({
         right: 10,
     },
     icon2: {
-        marginLeft: -70,
+        marginLeft: -80,
     },
     date: {
         fontFamily: 'Convergence-Regular',
         fontSize: 22,
-        marginLeft: 15,
+        marginLeft: '2%',
     },
     time: {
         flexDirection: 'row',
         flexShrink: 0,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 19,
+        marginTop: '3%',
     },
 });
 

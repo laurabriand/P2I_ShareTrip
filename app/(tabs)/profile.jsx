@@ -47,8 +47,8 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
+      <View style={styles.appName}>
+        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.logo} />
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
       <View style={styles.content}>
@@ -69,21 +69,22 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 0,
+    paddingTop: '10%',
+    paddingHorizontal: '5%',
     backgroundColor: '#DAE7FF',
   },
-  row: {
+  appName: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 50,
-    marginBottom: 0,
+    justifyContent: 'center',
+    marginLeft: '5%',
+    marginTop: '5%',
+    left: '-5%',
   },
-  image: {
-    width: 84,
-    height: 49,
+  logo: {
+    width: '15%',
+    height: undefined,
+    aspectRatio: 1,
     alignSelf: 'center',
   },
   shareTrip: {
@@ -92,49 +93,48 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 36,
-    marginLeft: 20,
+    marginLeft: '5%',
   },
   content: {
     flex: 1,
-    marginTop: 20,
-    paddingBottom: 0,
+    marginTop: '5%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
   },
   title: {
     fontFamily: 'LilitaOne-Regular',
     fontSize: 36,
     color: '#5A439A',
-    marginBottom: 16,
+    marginBottom: '3%',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: '5%',
   },
   label: {
     color: '#5A439A',
     fontFamily: 'LilitaOne-Regular',
     fontSize: 20,
-    marginLeft: 30,
-    marginBottom: 5,
-    marginTop: 10,
+    marginLeft: '5%',
+    marginBottom: '2%',
+    marginTop: '2%',
   },
   info: {
     color: '#000000',
     fontFamily: 'Convergence-Regular',
     fontSize: 18,
-    marginLeft: 30,
-    marginBottom: 20,
+    marginLeft: '5%',
+    marginBottom: '5%',
   },
   secondButton: {
     backgroundColor: '#9B7EDC',
-    paddingVertical: 5,
-    paddingHorizontal: 40,
+    paddingVertical: '1.5%',
+    paddingHorizontal: '10%',
     borderRadius: 60,
-    width: 350,
-    height: 40,
+    width: '90%',
+    height: '6%',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: '5%',
   },
   secondButtonText: {
     color: '#FFFFFF',

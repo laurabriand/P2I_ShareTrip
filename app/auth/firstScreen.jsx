@@ -14,8 +14,8 @@ const FirstScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
-            <Text style={styles.title}>ShareTrip</Text>
+            <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.logo} />
+            <Text style={styles.shareTrip}>ShareTrip</Text>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('auth/logInScreen')}>
                 <Text style={styles.buttonText}>Se connecter</Text>
             </TouchableOpacity>
@@ -30,10 +30,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        padding: 16,
+        padding: '5%',
         backgroundColor: '#DAE7FF',
     },
-    title: {
+    shareTrip: {
         color: '#5A439A',
         width: 278,
         fontFamily: 'Knewave-Regular',
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignSelf: 'center',
     },
-    image: {
+    logo: {
         width: 200,
         height: 200,
         alignSelf: 'center',

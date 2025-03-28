@@ -43,7 +43,34 @@ export const getComments = async () => {
       throw error;  // Propagation de l'erreur pour la gestion en amont
     }
   };
-  
+
+//GET COMMENTS (SUGGESTION ID)
+export const getCommentsBySuggestionId = async (suggestionId) => {
+  try {
+    const commentsRef = collection(db, 'comments');
+    const snapshot = await getDocs(commentsRef);
+    const comments = [];
+
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;  
+    }
+
+    snapshot.forEach(doc => {
+      const commentData = doc.data();
+      console.log('CommentData:', commentData);
+      if (commentData.suggestionId === suggestionId.trim()) {
+        comments.push({ id: doc.id, ...commentData }); 
+      }
+    });
+    console.log('Comments:', comments);
+    return comments;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des commentaires :", error);
+    throw error;  
+  }
+};  
+
 //POST COMMENT
 export const postComment = async (commentData) => {
   try {

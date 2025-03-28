@@ -41,6 +41,35 @@ export const getProjects = async () => {
       throw error;  // Propagation de l'erreur pour la gestion en amont
     }
   };
+
+//GET PROJECTS BY USER ID
+export const getProjectsByUserId = async (userId) => {
+  try {
+  const projectsRef = collection(db, 'projects');
+  const snapshot = await getDocs(projectsRef);
+  const projects = [];
+
+  if (snapshot.empty) {
+    console.log('No matching documents.');
+    return;  
+  }
+
+  snapshot.forEach(doc => {
+    const projectData = doc.data();
+    console.log('ProjectData:', projectData);
+    projectData.users.forEach(user => {
+      if (user === userId.trim()) {
+        projects.push({ id: doc.id, ...projectData }); 
+      }
+    });
+    console.log('Projects:', projects);
+    return projects;
+
+  })} catch (error) {
+    console.error("Erreur lors de la récupération des commentaires :", error);
+    throw error;  
+  }
+};
   
 
   //POST PROJECT

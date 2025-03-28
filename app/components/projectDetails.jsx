@@ -69,14 +69,12 @@ const projectDetails = ({ project }) => {
     const handleShare = async () => {
         console.log("Partage en cours...");
         try {
-            // Créez un deeplink vers la page du projet
             const deepLink = Linking.createURL(`/project/${project.id}`, {
                 queryParams: {
                     name: project.destination,
                 },
             });
 
-            // Utilisez le partage natif pour partager le lien
             const result = await Share.share({
                 message: `Rejoignez le projet "${project.destination}" sur ShareTrip ! Cliquez ici pour en savoir plus : ${deepLink}`,
             });
@@ -96,13 +94,15 @@ const projectDetails = ({ project }) => {
     };
 
     const router = useRouter();
+    const handleNavigationActivities = () => {
+        router.push(`/activities/${project.id}`);
+    };
+    const handleNavigationParticipants = () => {
+        router.push(`/participants/${project.id}`);
+    };
 
     return (
         <View style={styles.container} >
-            <TouchableOpacity style={styles.destination}>
-                <Text style={styles.label}>{project.destination}</Text>
-                <Icon name="chevron-up-outline" size={30} style={styles.icon1} />
-            </TouchableOpacity>
             <View style={styles.time}>
                 <Icon name="today-outline" size={37} color={'#5A439A'} style={styles.icon2} />
                 <Text style={styles.date}>du {formatDate(project.startDate)} au {formatDate(project.endDate)}</Text>
@@ -142,19 +142,21 @@ const projectDetails = ({ project }) => {
                 </View>
             </View>
             <View style={styles.manageButtonsContainer}>
-                <TouchableOpacity style={styles.manageButton} onPress={() => router.push('/activities')}>
+                <TouchableOpacity style={styles.manageButton} onPress={handleNavigationActivities}>
                     <Icon name="clipboard-outline" size={50} color="#5A439A" />
                     <Text style={styles.manageButtonText}>Gestion des activités</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.manageButton} onPress={() => router.push('/participants')}>
+                <TouchableOpacity style={styles.manageButton} onPress={handleNavigationParticipants}>
                     <Icon name="people-outline" size={50} color="#5A439A" />
                     <Text style={styles.manageButtonText}>Gestion des participants</Text>
                 </TouchableOpacity>
+
             </View>
             <TouchableOpacity style={styles.secondButton} onPress={handleShare}>
                 <Text style={styles.secondButtonText} >Créer un lien de partage</Text>
             </TouchableOpacity>
+
         </View>
     )
 };
@@ -162,71 +164,47 @@ const projectDetails = ({ project }) => {
 const styles = StyleSheet.create({
     container: {
         flexShrink: 0,
-        width: 380,
-        height: 600,
+        width: '95%',
+        height: '80%',
         borderRadius: 40,
         backgroundColor: '#FFFFFF',
-        marginBottom: 20,
-    },
-    destination: {
-        flexDirection: 'row',
-        width: 320,
-        height: 32,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        position: 'relative',
-        marginHorizontal: 30,
-        backgroundColor: 'rgba(218, 231, 255, 0.48)',
-    },
-    label: {
-        color: '#5A439A',
-        fontFamily: 'LilitaOne-Regular',
-        fontSize: 28,
-        textAlign: 'center',
-        flex: 1,
-    },
-    icon1: {
-        position: 'absolute',
-        right: 10,
+        marginBottom: '5%',
     },
     icon2: {
         position: 'absolute',
-        marginRight: 10,
+        marginRight: '2%',
         left: 20,
     },
     date: {
         fontFamily: 'Convergence-Regular',
         fontSize: 22,
-        marginTop: 5,
-        marginLeft: 70,
+        marginTop: '2%',
+        marginLeft: '20%',
     },
     time: {
         flexDirection: 'row',
         flexShrink: 0,
         alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 8,
+        marginTop: '2%',
+        marginBottom: '2%',
     },
     people: {
         fontFamily: 'LilitaOne-Regular',
         fontSize: 22,
-        marginTop: 5,
-        marginLeft: 70,
+        marginTop: '2%',
+        marginLeft: '20%',
     },
     secondButton: {
         backgroundColor: '#9B7EDC',
-        paddingVertical: 5,
-        paddingHorizontal: 40,
+        justifyContent: 'center',
         borderRadius: 60,
-        width: 350,
-        height: 40,
+        width: '90%',
+        height: '8%',
         alignItems: 'center',
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '5%',
         position: 'absolute',
-        bottom: 15,
+        bottom: '0%',
     },
     secondButtonText: {
         color: '#FFFFFF',
@@ -236,32 +214,28 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     participantsContainer: {
-        marginTop: 5,
-
+        marginTop: '2%',
+        height: '28%',
     },
-
     activitiesContainer: {
-        marginTop: 10,
-
+        marginTop: '2%',
+        height: '28%',
     },
-
     scrollBox: {
-        maxHeight: 100,
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 20,
+        maxHeight: '60%',
+        marginTop: '2%',
+        width: '90%',
+        alignSelf: 'center',
         borderRadius: 10,
+        paddingVertical: '2%',
         backgroundColor: 'rgba(218, 231, 255, 0.48)',
     },
-
     userText: {
         fontFamily: 'Convergence-Regular',
         fontSize: 18,
-        marginBottom: 4,
-        marginTop: 4,
-        marginLeft: 10,
+        marginBottom: '2%',
+        marginLeft: '3%',
     },
-
     userTextItalic: {
         fontFamily: 'Convergence-Regular',
         fontSize: 16,
@@ -270,10 +244,9 @@ const styles = StyleSheet.create({
     manageButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 20,
+        marginTop: '0%',
         paddingHorizontal: 10,
     },
-
     manageButton: {
         alignItems: 'center',
         justifyContent: 'center',

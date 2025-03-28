@@ -4,8 +4,8 @@ import React from 'react'
 export default function Archive() {
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
+      <View style={styles.appName}>
+        <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.logo} />
         <Text style={styles.shareTrip}>ShareTrip</Text>
       </View>
       <View Style={styles.content}>
@@ -18,21 +18,22 @@ export default function Archive() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingBottom: 0,
+    paddingTop: '10%',
+    paddingHorizontal: '5%',
     backgroundColor: '#DAE7FF',
   },
-  row: {
+  appName: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 50,
-    marginBottom: 0,
+    justifyContent: 'center',
+    marginLeft: '5%',
+    marginTop: '5%',
+    left: '-5%',
   },
-  image: {
-    width: 84,
-    height: 49,
+  logo: {
+    width: '15%',
+    height: undefined,
+    aspectRatio: 1,
     alignSelf: 'center',
   },
   shareTrip: {
@@ -41,57 +42,14 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 36,
-    marginLeft: 20,
+    marginLeft: '5%',
   },
   content: {
     flex: 1,
-    marginTop: 20,
-    paddingBottom: 0,
+    marginTop: '5%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor: '#DAE7FF',
-    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
-  title: {
-    fontFamily: 'LilitaOne-Regular',
-    fontSize: 36,
-    color: '#5A439A',
-    marginBottom: 16,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  label: {
-    color: '#5A439A',
-    fontFamily: 'LilitaOne-Regular',
-    fontSize: 20,
-    marginLeft: 30,
-    marginBottom: 5,
-    marginTop: 10,
-  },
-  info: {
-    color: '#000000',
-    fontFamily: 'Convergence-Regular',
-    fontSize: 18,
-    marginLeft: 30,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: '#5A439A',
-    justifyContent: 'center',
-    borderRadius: 60,
-    marginBottom: 22,
-    marginTop: 20,
-    width: 360,
-    height: 60,
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontFamily: 'LilitaOne-Regular',
-    fontSize: 36,
-    textAlign: 'center',
-    alignSelf: 'center',
-  }
 });
 

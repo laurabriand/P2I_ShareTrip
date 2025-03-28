@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SignUp } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
-import { postUser } from '../lib/userServices';
-import { getAuth } from 'firebase/auth';
+
 
 const SignUpScreen = () => {
     const [userName, setUserName] = useState('');
@@ -43,7 +42,7 @@ const SignUpScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.image} />
+            <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.logo} />
             <Text style={styles.title}>INSCRIPTION</Text>
             <Text style={styles.label}>Entrez votre adresse mail :</Text>
             <TextInput
@@ -94,51 +93,52 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        padding: 16,
+        padding: '5%',
         backgroundColor: '#DAE7FF',
     },
-    image: {
-        width: 182,
-        height: 119,
+    logo: {
+        width: '40%',
+        height: undefined,
+        aspectRatio: 182 / 119,
         alignSelf: 'center',
+        marginBottom: '5%',
     },
     title: {
         fontFamily: 'LilitaOne-Regular',
         fontSize: 36,
         color: '#5A439A',
-        marginBottom: 16,
+        marginBottom: '5%%',
         textAlign: 'center',
-        marginBottom: 50,
     },
     label: {
         color: '#5A439A',
         fontFamily: 'LilitaOne-Regular',
         fontSize: 20,
-        marginLeft: 30,
-        marginBottom: 5,
-        marginTop: 10,
+        marginBottom: '2%',
+        marginTop: '5%',
+        marginLeft: '5%',
     },
     input: {
-        height: 40,
-        width: 350,
+        height: '5%',
+        width: '95%',
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 50,
-        marginBottom: 12,
-        paddingHorizontal: 8,
+
+        paddingHorizontal: '3%',
         backgroundColor: '#FFFFFF',
         alignSelf: 'center',
     },
     button: {
         backgroundColor: '#5A439A',
-        paddingVertical: 9,
-        paddingHorizontal: 40,
         borderRadius: 60,
-        width: 350,
-        height: 60,
+        width: '95%',
+        height: '7%',
         alignItems: 'center',
         alignSelf: 'center',
-        marginTop: 40,
+        justifyContent: 'center',
+        marginTop: '5%',
+        marginBottom: '5%',
     },
     buttonText: {
         color: '#FFFFFF',
@@ -157,18 +157,17 @@ const styles = StyleSheet.create({
         fontFamily: 'LilitaOne-Regular',
         fontSize: 20,
         textAlign: 'center',
-        marginTop: 120,
+        marginTop: '8%',
     },
     secondButton: {
         backgroundColor: '#9B7EDC',
-        paddingVertical: 5,
-        paddingHorizontal: 40,
+        justifyContent: 'center',
         borderRadius: 60,
-        width: 350,
-        height: 40,
+        width: '95%',
+        height: '5%',
         alignItems: 'center',
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: '2%',
     },
     secondButtonText: {
         color: '#FFFFFF',
