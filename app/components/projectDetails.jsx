@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import { getUserById } from '../lib/userServices';
+import { getUserByUID } from '../lib/userServices';
 import { getSuggestionById } from '../lib/suggestionServices';
 import * as Linking from 'expo-linking';
 
@@ -27,13 +27,13 @@ const projectDetails = ({ project }) => {
         const fetchUserNames = async () => {
 
             const names = await Promise.all(
-                project.users.map(async (id) => {
+                project.users.map(async (uid) => {
                     try {
-                        const user = await getUserById(id.trim());
-                        return user?.userName || id;
+                        const user = await getUserByUID(uid.trim());
+                        return user?.userName || uid;
                     } catch (error) {
-                        console.error(`Erreur lors de la récupération de l'utilisateur avec l'ID ${id}:`, error);
-                        return id;
+                        console.error(`Erreur lors de la récupération de l'utilisateur avec l'ID ${uid}:`, error);
+                        return uid;
                     }
                 })
             );

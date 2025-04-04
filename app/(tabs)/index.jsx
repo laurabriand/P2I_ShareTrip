@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useFonts } from 'expo-font';
-import { useNavigation } from '@react-navigation/native';
 import Project from "../components/project";
 import React, { useEffect, useState } from 'react';
-import { getProjects } from "../lib/projectServices";
+import { getProjects, getProjectsByUserId } from "../lib/projectServices";
 import { useRouter } from 'expo-router';
+import { getAuth } from 'firebase/auth';
+
 
 export default function Index() {
   const [fontsLoaded] = useFonts({
@@ -12,17 +13,38 @@ export default function Index() {
     'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
     'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
   });
-  const navigation = useNavigation();
+  const router = useRouter();
+
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   const [projects, setProjects] = useState([]);
   useEffect(() => {
     const fetchProjects = async () => {
-      const projectsData = await getProjects();
+      const projectsData = await getProjectsByUserId(user.uid);
       setProjects(projectsData);
+      console.log('Projets chargés:', projectsData);
     };
 
     fetchProjects();
   }, []);
+
+  if (!projects || projects.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.appName}>
+          <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.logo} />
+          <Text style={styles.shareTrip}>ShareTrip</Text>
+        </View>
+        <View style={styles.content}>
+          <Text style={styles.empty}>Aucun projet pour le moment...</Text>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/addProject')}>
+          <Text style={styles.buttonText}>Créer un projet</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -37,7 +59,7 @@ export default function Index() {
           ))}
         </ScrollView>
       </View>
-      <TouchableOpacity style={styles.button} >
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/addProject')}>
         <Text style={styles.buttonText}>Créer un projet</Text>
       </TouchableOpacity>
     </View>
@@ -99,5 +121,12 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: '90%', // La ScrollView occupe toute la largeur de son conteneur parent
+  },
+  empty: {
+    color: '#5A439A',
+    fontFamily: 'LilitaOne-Regular',
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 100,
   },
 });

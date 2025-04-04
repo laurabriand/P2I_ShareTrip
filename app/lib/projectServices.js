@@ -42,7 +42,7 @@ export const getProjects = async () => {
     }
   };
 
-//GET PROJECTS BY USER ID
+//GET PROJECTS BY USER UID
 export const getProjectsByUserId = async (userId) => {
   try {
   const projectsRef = collection(db, 'projects');
@@ -62,11 +62,13 @@ export const getProjectsByUserId = async (userId) => {
         projects.push({ id: doc.id, ...projectData }); 
       }
     });
-    console.log('Projects:', projects);
-    return projects;
 
-  })} catch (error) {
-    console.error("Erreur lors de la récupération des commentaires :", error);
+  })
+  console.log('Projects:', projects);
+  return projects;
+
+} catch (error) {
+    console.error("Erreur lors de la récupération des projets :", error);
     throw error;  
   }
 };
