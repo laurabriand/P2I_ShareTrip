@@ -74,7 +74,7 @@ export default function Activities() {
                         </View>
                     </View>
                     <Text style={styles.empty}>Aucune suggestion pour le moment</Text>
-                    <TouchableOpacity style={styles.button} >
+                    <TouchableOpacity onPress={() => router.push(`/addSuggestion/${id}`)} style={styles.button}>
                         <Text style={styles.buttonText}>Proposer une activité</Text>
                     </TouchableOpacity>
                 </View>
@@ -107,7 +107,7 @@ export default function Activities() {
                         ))}
                     </ScrollView>
                 </View>
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity onPress={() => router.push(`/addSuggestion/${id}`)} style={styles.button} >
                     <Text style={styles.buttonText}>Proposer une activité</Text>
                 </TouchableOpacity>
             </View>

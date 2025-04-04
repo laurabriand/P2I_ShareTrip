@@ -1,5 +1,6 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase.config";
+import { constructFromSymbol } from "date-fns/constants";
 
 //GET ALL SUGGESTIONS
 export const getSuggestions = async () => {
@@ -45,11 +46,20 @@ export const getSuggestionById = async (suggestionId) => {
 };
 
 //POST SUGGESTION
-export const postSuggestion = async (suggestionData) => {
+export const postSuggestion = async (suggestionData, projectId) => {
     try {
       const suggestionRef = collection(db, 'suggestions');
       const docRef = await addDoc(suggestionRef, suggestionData);
       console.log('Suggestion ajoutée avec succès, ID :', docRef.id);
+
+      // Ajoutez l'ID de la suggestion au projet
+      const projectRef = doc(db, 'projects', projectId.projectId.trim());
+      console.log('projectRef:', projectRef);
+      await updateDoc(projectRef, {
+        activities: arrayUnion(docRef.id)
+      });
+      console.log('ID de la suggestion ajouté au projet avec succès');
+
       return docRef.id; // Retourne l'ID du document ajouté
     }
     catch (error) {

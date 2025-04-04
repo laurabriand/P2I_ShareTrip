@@ -95,7 +95,7 @@ const AddProjectForm = () => {
           onChange={handleEndDateChange}
         />
       )}
-      <Button title="Ajouter" onPress={handleAddProject} />
+      <Button title="Ajouter le projet" onPress={handleAddProject} />
       {message ? <Text style={styles.message}>{message}</Text> : null}
     </View>
   );

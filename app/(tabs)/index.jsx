@@ -6,7 +6,6 @@ import { getProjects, getProjectsByUserId } from "../lib/projectServices";
 import { useRouter } from 'expo-router';
 import { getAuth } from 'firebase/auth';
 
-
 export default function Index() {
   const [fontsLoaded] = useFonts({
     'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),

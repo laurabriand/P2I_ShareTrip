@@ -16,7 +16,7 @@ const projectDetails = ({ project }) => {
     });
 
     const formatDate = (ts) => {
-        const date = new Date(Number(ts));
+        const date = ts.toDate ? ts.toDate() : new Date(Number(ts));
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         return `${day}/${month}`;
@@ -102,67 +102,75 @@ const projectDetails = ({ project }) => {
     };
 
     return (
-        <View style={styles.container} >
-            <View style={styles.time}>
-                <Icon name="today-outline" size={37} color={'#5A439A'} style={styles.icon2} />
-                <Text style={styles.date}>du {formatDate(project.startDate)} au {formatDate(project.endDate)}</Text>
-            </View>
-            <View style={styles.participantsContainer}>
-                <Icon name="people" size={37} color={'#5A439A'} style={styles.icon2} />
-                <Text style={styles.people}>Participants :</Text>
-                <View style={styles.scrollBox}>
-                    <ScrollView>
-                        {userNames && userNames.length > 0 ? (
-                            userNames.map((name, index) => (
-                                <Text key={index} style={styles.userText}>
-                                    • {name}
-                                </Text>
-                            ))
-                        ) : (
-                            <Text style={styles.userTextItalic}>Aucun participant</Text>
-                        )}
-                    </ScrollView>
+        <View style={styles.componant}>
+            <View style={styles.container} >
+                <View style={styles.time}>
+                    <Icon name="today-outline" size={37} color={'#5A439A'} style={styles.icon2} />
+                    <Text style={styles.date}>du {formatDate(project.startDate)} au {formatDate(project.endDate)}</Text>
                 </View>
-            </View>
-            <View style={styles.activitiesContainer}>
-                <Icon name="clipboard" size={32} color={'#5A439A'} style={styles.icon2} />
-                <Text style={styles.people}>Activitiés :</Text>
-                <View style={styles.scrollBox}>
-                    <ScrollView>
-                        {activityNames && activityNames.length > 0 ? (
-                            activityNames.map((name, index) => (
-                                <Text key={index} style={styles.userText}>
-                                    • {name}
-                                </Text>
-                            ))
-                        ) : (
-                            <Text style={styles.userTextItalic}>Aucune activité</Text>
-                        )}
-                    </ScrollView>
+                <View style={styles.participantsContainer}>
+                    <Icon name="people" size={37} color={'#5A439A'} style={styles.icon2} />
+                    <Text style={styles.people}>Participants :</Text>
+                    <View style={styles.scrollBox}>
+                        <ScrollView>
+                            {userNames && userNames.length > 0 ? (
+                                userNames.map((name, index) => (
+                                    <Text key={index} style={styles.userText}>
+                                        • {name}
+                                    </Text>
+                                ))
+                            ) : (
+                                <Text style={styles.userTextItalic}>Aucun participant</Text>
+                            )}
+                        </ScrollView>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.manageButtonsContainer}>
-                <TouchableOpacity style={styles.manageButton} onPress={handleNavigationActivities}>
-                    <Icon name="clipboard-outline" size={50} color="#5A439A" />
-                    <Text style={styles.manageButtonText}>Gestion des activités</Text>
-                </TouchableOpacity>
+                <View style={styles.activitiesContainer}>
+                    <Icon name="clipboard" size={32} color={'#5A439A'} style={styles.icon2} />
+                    <Text style={styles.people}>Activitiés :</Text>
+                    <View style={styles.scrollBox}>
+                        <ScrollView>
+                            {activityNames && activityNames.length > 0 ? (
+                                activityNames.map((name, index) => (
+                                    <Text key={index} style={styles.userText}>
+                                        • {name}
+                                    </Text>
+                                ))
+                            ) : (
+                                <Text style={styles.userTextItalic}>Aucune activité</Text>
+                            )}
+                        </ScrollView>
+                    </View>
+                </View>
+                <View style={styles.manageButtonsContainer}>
+                    <TouchableOpacity style={styles.manageButton} onPress={handleNavigationActivities}>
+                        <Icon name="clipboard-outline" size={50} color="#5A439A" />
+                        <Text style={styles.manageButtonText}>Gestion des activités</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={styles.manageButton} onPress={handleNavigationParticipants}>
-                    <Icon name="people-outline" size={50} color="#5A439A" />
-                    <Text style={styles.manageButtonText}>Gestion des participants</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.manageButton} onPress={handleNavigationParticipants}>
+                        <Icon name="people-outline" size={50} color="#5A439A" />
+                        <Text style={styles.manageButtonText}>Gestion des participants</Text>
+                    </TouchableOpacity>
+
+                </View>
 
             </View>
             <TouchableOpacity style={styles.secondButton} onPress={handleShare}>
                 <Text style={styles.secondButtonText} >Créer un lien de partage</Text>
             </TouchableOpacity>
-
         </View>
     )
 };
 
 const styles = StyleSheet.create({
+    componant: {
+        flex: 1,
+        width: '100%',
+        alignItems: 'center',
+    },
     container: {
+        marginTop: '2%',
         flexShrink: 0,
         width: '95%',
         height: '80%',
@@ -203,6 +211,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         marginTop: '5%',
+        marginBottom: '3%',
         position: 'absolute',
         bottom: '0%',
     },
@@ -225,6 +234,7 @@ const styles = StyleSheet.create({
         maxHeight: '60%',
         marginTop: '2%',
         width: '90%',
+        height: '100%',
         alignSelf: 'center',
         borderRadius: 10,
         paddingVertical: '2%',
@@ -244,8 +254,8 @@ const styles = StyleSheet.create({
     manageButtonsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: '0%',
-        paddingHorizontal: 10,
+        marginTop: '2%',
+        paddingHorizontal: '3%',
     },
     manageButton: {
         alignItems: 'center',

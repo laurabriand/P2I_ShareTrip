@@ -1,22 +1,46 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { postSuggestion } from '../lib/suggestionServices';
+import { getAuth } from 'firebase/auth';
+import { getUserByUID } from '../lib/userServices';
+import { useEffect } from 'react';
 
-const AddSuggestionForm = () => {
+const AddSuggestionForm = (projectId) => {
   const [suggestionName, setSuggestionName] = useState('');
   const [price, setPrice] = useState(0);
   const [type, setType] = useState('');
   const [message, setMessage] = useState('');
+  const [userInfo, setUserInfo] = useState(null);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (user?.uid) {
+        try {
+          const userData = await getUserByUID(user.uid);
+          setUserInfo(userData);
+        } catch (err) {
+          setError('Erreur lors de la récupération des informations utilisateur');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [user]);
 
   const handleAddSuggestion = async () => {
-    if (!suggestionName || !price || !type) {
+    if (!suggestionName || !price) {
       setMessage('Veuillez remplir tous les champs.');
       return;
     }
 
     try {
-      const newSuggestionId = await postSuggestion({ suggestionName, price, type, createdAt: new Date() });
-      setMessage(`Suggestion ajoutés avec succès ! `);
+      const newSuggestionId = await postSuggestion({ suggestionName, price, creator: userInfo.userName, createdAt: new Date() }, projectId);
+      setMessage(`Suggestion ajoutés avec succès : ID: ${newSuggestionId}`);
       setSuggestionName('');
       setPrice(0);
       setType('');
@@ -29,27 +53,26 @@ const AddSuggestionForm = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Ajouter une suggestion</Text>
+      <Text style={styles.label}>Entrez le nom de l'activité :</Text>
       <TextInput
-        placeholder="Nom"
+        placeholder="Nom de l'activité"
         value={suggestionName}
         onChangeText={setSuggestionName}
         style={styles.input}
       />
+      <Text style={styles.label}>Entrez le prix par personne :</Text>
       <TextInput
-        placeholder="Price"
-        value={price}
-        onChangeText={(text) => setPrice(text === "" ? "" : parseFloat(text))}
-        keyboardType="numeric"
+        placeholder="Prix (en €)"
+        value={price.toString()} // Convertit le prix en chaîne pour l'affichage
+        onChangeText={(text) => {
+          // Validation pour autoriser uniquement les nombres
+          const numericValue = text.replace(/[^0-9.]/g, ''); // Supprime tout sauf les chiffres et le point
+          setPrice(numericValue);
+        }}
+        keyboardType="numeric" // Affiche un clavier numérique
         style={styles.input}
       />
-      <TextInput
-        placeholder="Type"
-        value={type}
-        onChangeText={setType}
-        style={styles.input}
-      />
-      <Button title="Ajouter" onPress={handleAddSuggestion} />
+      <Button title="Ajouter la suggestion" onPress={handleAddSuggestion} />
       {message ? <Text style={styles.message}>{message}</Text> : null}
     </View>
   );
@@ -57,30 +80,28 @@ const AddSuggestionForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: '2%',
     backgroundColor: 'white',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
+
   },
   input: {
     borderBottomWidth: 1,
     borderColor: '#ccc',
-    marginBottom: 15,
-    padding: 8,
+    marginBottom: '7%',
+    padding: '1%',
   },
   message: {
     marginTop: 10,
     textAlign: 'center',
     color: 'green',
+  },
+  label: {
+    color: '#0F0F0F',
+    fontFamily: 'LilitaOne-Regular',
+    fontSize: 20,
+    marginBottom: '2%',
+    marginLeft: '5%',
   },
 });
 

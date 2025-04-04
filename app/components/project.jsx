@@ -13,7 +13,7 @@ const Project = ({ project }) => {
     });
 
     const formatDate = (ts) => {
-        const date = new Date(Number(ts));
+        const date = ts.toDate ? ts.toDate() : new Date(Number(ts));
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         return `${day}/${month}`;

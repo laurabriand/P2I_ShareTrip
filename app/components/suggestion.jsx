@@ -2,10 +2,33 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CommentSection from './commentSection';
+import { useRouter } from 'expo-router';
 
 
 const Suggestion = ({ suggestion }) => {
+    const router = useRouter();
+    const [likeActive, setLikeActive] = useState(false);
+    const [dislikeActive, setDislikeActive] = useState(false);
+    const handleLike = () => {
+        if (likeActive) {
+            setLikeActive(false);
+        } else {
+            setLikeActive(true);
+            setDislikeActive(false);
+        }
+    };
 
+    const handleDislike = () => {
+        if (dislikeActive) {
+            setDislikeActive(false);
+        } else {
+            setDislikeActive(true);
+            setLikeActive(false);
+        }
+    };
+
+    const likeButtonStyle = likeActive ? [styles.icon1, styles.activeIcon1] : styles.icon1;
+    const dislikeButtonStyle = dislikeActive ? [styles.icon2, styles.activeIcon2] : styles.icon2;
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{suggestion.creator} propose : </Text>
@@ -16,13 +39,13 @@ const Suggestion = ({ suggestion }) => {
             </View>
             <View style={styles.container2}>
                 <View style={styles.row2}>
-                    <TouchableOpacity style={styles.icon1}>
-                        <Icon name="thumbs-up-outline" size={30} color="#000000" />
+                    <TouchableOpacity onPress={handleLike} style={likeButtonStyle}>
+                        <Icon name="thumbs-up-outline" size={30} color={likeActive ? "#FFFFFF" : "#000000"} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon2}>
-                        <Icon name="thumbs-down-outline" size={30} color="#000000" />
+                    <TouchableOpacity onPress={handleDislike} style={dislikeButtonStyle}>
+                        <Icon name="thumbs-down-outline" size={30} color={dislikeActive ? "#FFFFFF" : "#000000"} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.icon3}>
+                    <TouchableOpacity onPress={() => router.push(`/addComment/${suggestion.id}`)} style={styles.icon3}>
                         <Icon name="chatbox-outline" size={30} color="#000000" />
                     </TouchableOpacity>
                 </View>
@@ -120,6 +143,24 @@ const styles = StyleSheet.create({
         borderColor: '#rgba(73, 79, 160, 0.71)',
         marginLeft: 15,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 10,
+    },
+    icon: {
+        padding: 10,
+        borderRadius: 20,
+        backgroundColor: '#f0f0f0',
+    },
+    activeIcon1: {
+        backgroundColor: '#rgba(55, 119, 50, 0.71)',
+    },
+    activeIcon2: {
+        backgroundColor: '#rgba(122, 58, 59, 0.71)', // Couleur de fond pour l'état actif
+    },
 });
+
+
 
 export default Suggestion;

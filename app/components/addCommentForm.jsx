@@ -1,10 +1,34 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { postComment } from '../lib/commentServices'
+import { getAuth } from 'firebase/auth';
+import { getUserByUID } from '../lib/userServices';
+import { useEffect } from 'react';
 
-const AddCommentForm = () => {
+const AddCommentForm = (suggestionId) => {
   const [text, setText] = useState('');
   const [message, setMessage] = useState('');
+  const [userInfo, setUserInfo] = useState(null);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (user?.uid) {
+        try {
+          const userData = await getUserByUID(user.uid);
+          setUserInfo(userData);
+        } catch (err) {
+          setError('Erreur lors de la récupération des informations utilisateur');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, [user]);
 
   const handleAddComment = async () => {
     if (!text) {
@@ -13,8 +37,8 @@ const AddCommentForm = () => {
     }
 
     try {
-      const newCommentId = await postComment({ text, createdAt: new Date() });
-      setMessage(`Commentaire ajouté avec succès ! `);
+      const newCommentId = await postComment({ text, creator: userInfo.userName, suggestionId: suggestionId.suggestionId, createdAt: new Date() });
+      setMessage(`Commentaire ajouté avec succès : ${newCommentId}`);
       setText('');
     } catch (error) {
       setMessage('Erreur lors de l’ajout du commentaire.');
@@ -24,7 +48,7 @@ const AddCommentForm = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Ajouter un commentaire</Text>
+      <Text style={styles.label}>Entrez votre commentaire : </Text>
       <TextInput
         placeholder="Commentaire"
         value={text}
@@ -39,30 +63,28 @@ const AddCommentForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: '2%',
     backgroundColor: 'white',
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
+
   },
   input: {
     borderBottomWidth: 1,
     borderColor: '#ccc',
-    marginBottom: 15,
-    padding: 8,
+    marginBottom: '7%',
+    padding: '1%',
   },
   message: {
     marginTop: 10,
     textAlign: 'center',
     color: 'green',
+  },
+  label: {
+    color: '#0F0F0F',
+    fontFamily: 'LilitaOne-Regular',
+    fontSize: 20,
+    marginBottom: '5%',
+    marginLeft: '5%',
   },
 });
 
