@@ -3,8 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } fr
 import { SignIn } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-
-
+import { getAuth } from 'firebase/auth';
 
 const LogInScreen = () => {
     const navigation = useNavigation();
@@ -27,6 +26,8 @@ const LogInScreen = () => {
                 return;
             }
             await SignIn(email, password);
+            const auth = getAuth();
+            const user = auth.currentUser;
             navigation.navigate('(tabs)');
             console.log('Email:', email);
             console.log('Password:', password);

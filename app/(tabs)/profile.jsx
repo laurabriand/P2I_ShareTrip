@@ -54,9 +54,9 @@ const Profile = () => {
       <View style={styles.content}>
         <Text style={styles.title}>MON PROFIL</Text>
         <Text style={styles.label}>Mon nom d'utilisateur :</Text>
-        <Text style={styles.info}>{userInfo?.userName ?? 'User name non disponible'}</Text>
+        <Text style={styles.info}>{loading ? 'Chargement...' : userInfo?.userName ?? 'User name non disponible'}</Text>
         <Text style={styles.label}>Mon adresse mail :</Text>
-        <Text style={styles.info}>{user?.email ?? 'Email non disponible'}</Text>
+        <Text style={styles.info}>{loading ? 'Chargement...' : user?.email ?? 'Email non disponible'}</Text>
         <TouchableOpacity style={styles.secondButton} onPress={handleDisconnect}>
           <Text style={styles.secondButtonText}>Se déconnecter</Text>
         </TouchableOpacity>

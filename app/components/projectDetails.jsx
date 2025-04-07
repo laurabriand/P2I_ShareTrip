@@ -69,7 +69,7 @@ const projectDetails = ({ project }) => {
     const handleShare = async () => {
         console.log("Partage en cours...");
         try {
-            const deepLink = Linking.createURL(`/project/${project.id}`, {
+            const deepLink = Linking.createURL(`/invitation/${project.id}`, {
                 queryParams: {
                     name: project.destination,
                 },
@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Convergence-Regular',
         fontSize: 16,
         fontStyle: 'italic',
+        marginLeft: '3%',
     },
     manageButtonsContainer: {
         flexDirection: 'row',

@@ -2,33 +2,50 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "rea
 import { useFonts } from 'expo-font';
 import Project from "../components/project";
 import React, { useEffect, useState } from 'react';
-import { getProjects, getProjectsByUserId } from "../lib/projectServices";
+import { getProjects, getFuturProjectsByUserId } from "../lib/projectServices";
 import { useRouter } from 'expo-router';
 import { getAuth } from 'firebase/auth';
 
 export default function Index() {
-  const [fontsLoaded] = useFonts({
-    'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-    'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-    'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
-  });
   const router = useRouter();
 
   const auth = getAuth();
   const user = auth.currentUser;
-
+  const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
+
   useEffect(() => {
     const fetchProjects = async () => {
-      const projectsData = await getProjectsByUserId(user.uid);
-      setProjects(projectsData);
-      console.log('Projets chargés:', projectsData);
+      if (user?.uid) {
+        try {
+          const projectsData = await getFuturProjectsByUserId(user.uid);
+          setProjects(projectsData);
+        } catch (err) {
+          setError('Erreur lors de la récupération des projets');
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      }
     };
-
     fetchProjects();
   }, []);
 
-  if (!projects || projects.length === 0) {
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.appName}>
+          <Image source={require('../assets/images/ShareTripLogo.png')} style={styles.logo} />
+          <Text style={styles.shareTrip}>ShareTrip</Text>
+        </View>
+        <View style={styles.content}>
+          <Text style={styles.empty}>Chargement...</Text>
+        </View>
+      </View>
+    );
+  }
+
+  if (projects.length === 0) {
     return (
       <View style={styles.container}>
         <View style={styles.appName}>

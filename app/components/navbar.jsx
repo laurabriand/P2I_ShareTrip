@@ -15,7 +15,7 @@ const Navbar = () => {
                 <Icon
                     name="airplane"
                     size={28}
-                    color={pathname === '/' || '/activities' ? '#6200EE' : '#aaa'}
+                    color={pathname === '/' ? '#6200EE' : '#aaa'}
                 />
                 <Text style={[styles.navText, { color: getColor('/') }]}>projets</Text>
             </TouchableOpacity>
