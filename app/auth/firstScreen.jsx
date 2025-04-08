@@ -2,6 +2,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import Linking from 'expo-linking';
 
 const FirstScreen = () => {
     const navigation = useNavigation();
@@ -9,7 +10,6 @@ const FirstScreen = () => {
         'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
     });
-
     if (!fontsLoaded) return null;
 
     return (

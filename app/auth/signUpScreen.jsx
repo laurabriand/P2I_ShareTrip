@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SignUp } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const SignUpScreen = () => {
@@ -12,6 +14,7 @@ const SignUpScreen = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigation = useNavigation();
+    const router = useRouter();
 
     const handleSubmit = async () => {
 
@@ -27,13 +30,14 @@ const SignUpScreen = () => {
         }
         try {
             await SignUp(email, password, userName);
-            console.log('Email:', email);
-            console.log('Password:', password);
-            // const auth = getAuth();
-            // const user = auth.currentUser;
-            // const userUID = user.uid;
-            // postUser({ userName, email, userUID, createdAt: new Date() });
-            navigation.navigate('(tabs)');
+            const redirectPath = await AsyncStorage.getItem('redirectAfterAuth');
+            console.log('Redirect Path:', redirectPath);
+            if (redirectPath) {
+                await AsyncStorage.removeItem('redirectAfterAuth'); // nettoyage
+                router.replace(redirectPath);
+            } else {
+                router.replace('/(tabs)'); // fallback
+            }
         } catch (err) {
             console.error('Erreur lors de l inscription :', err);
             setError('Échec de l inscription. Veuillez réessayer.');

@@ -74,7 +74,7 @@ const invitationDetails = ({ project }) => {
             const auth = getAuth();
             const user = auth.currentUser;
             await addUserToProject(project.id, user.uid);
-            router.push('/index');
+            router.push('/(tabs)');
         } catch (error) {
             console.error('Erreur lors de l\'ajout de l\'utilisateur au projet :', error);
             alert('Une erreur est survenue lors de la tentative de rejoindre le projet.');

@@ -58,8 +58,8 @@ const Suggestion = ({ suggestion }) => {
 const styles = StyleSheet.create({
     container: {
         flexShrink: 0,
-        width: '95%',
-        height: '25%',
+        width: '100%',
+        height: 500,
         borderRadius: 40,
         backgroundColor: 'rgba(218, 231, 255, 0.48)',
         marginBottom: '2%',
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     container2: {
         flexShrink: 0,
         width: '100%',
-        height: '75%',
+        height: 370,
         borderRadius: 40,
         backgroundColor: '#FFFFF5',
         marginBottom: '2%',

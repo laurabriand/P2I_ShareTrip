@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SignIn } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { getAuth } from 'firebase/auth';
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogInScreen = () => {
     const navigation = useNavigation();
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -15,6 +18,7 @@ const LogInScreen = () => {
         'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
         'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
     });
+
 
     const handleLogin = async () => {
         setLoading(true);
@@ -28,7 +32,15 @@ const LogInScreen = () => {
             await SignIn(email, password);
             const auth = getAuth();
             const user = auth.currentUser;
-            navigation.navigate('(tabs)');
+            const redirectPath = await AsyncStorage.getItem('redirectAfterAuth');
+            console.log('Redirect Path:', redirectPath);
+            if (redirectPath) {
+                await AsyncStorage.removeItem('redirectAfterAuth'); // nettoyage
+                router.replace(redirectPath);
+            } else {
+                router.replace('/(tabs)'); // fallback
+            }
+
             console.log('Email:', email);
             console.log('Password:', password);
         } catch (error) {

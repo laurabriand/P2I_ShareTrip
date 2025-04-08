@@ -36,11 +36,10 @@ const AddProjectForm = () => {
 
     try {
       const newProjectId = await postProject({ destination: destination, startDate: startTimestamp, endDate: endTimestamp, activities: initActivities, users: initUsers, createdAt: new Date() });
-      setMessage(`Projet ajouté avec succès ! ID : ${newProjectId}`);
+      setMessage(`Projet ajouté avec succès !`);
       setDestination('');
       setStart(dayjs());
       setEnd(dayjs());
-      console.log('Projet ajouté avec succès ! ID :', newProjectId);
     } catch (error) {
       setMessage('Erreur lors de l’ajout du projet.');
       console.error(error);

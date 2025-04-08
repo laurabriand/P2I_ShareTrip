@@ -100,10 +100,12 @@ export default function Activities() {
                         <Text style={styles.label}>Gestion des activités</Text>
                     </View>
                 </View>
-                <View style={styles.scrol}>
-                    <ScrollView>
+                <View style={styles.scrollContent}>
+                    <ScrollView style={styles.scrol} contentContainerStyle={{ paddingBottom: 20 }}>
                         {suggestions.map((activity, index) => (
+
                             <Suggestion key={index} suggestion={activity} />
+
                         ))}
                     </ScrollView>
                 </View>
@@ -210,6 +212,19 @@ const styles = StyleSheet.create({
     scrol: {
         flex: 1,
         marginTop: '2%',
+        marginBottom: '20%',
+        width: '100%',
+        height: '100%',
+        alignSelf: 'center',
+
+    },
+    scrollContent: {
+        maxHeight: '80%',
+        marginTop: '2%',
+        width: '90%',
+        height: '100%',
+        alignSelf: 'center',
+        borderRadius: 10,
     },
     empty: {
         color: '#5A439A',

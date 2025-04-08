@@ -5,17 +5,17 @@ import React, { useEffect, useState } from 'react';
 import { getProjects, getFuturProjectsByUserId } from "../lib/projectServices";
 import { useRouter } from 'expo-router';
 import { getAuth } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Index() {
   const router = useRouter();
-
   const auth = getAuth();
   const user = auth.currentUser;
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user?.uid) {
         try {
           const projectsData = await getFuturProjectsByUserId(user.uid);
@@ -26,9 +26,12 @@ export default function Index() {
         } finally {
           setLoading(false);
         }
+      } else {
+        setLoading(false); // même si pas connecté, on sort du chargement
       }
-    };
-    fetchProjects();
+    });
+
+    return () => unsubscribe(); // nettoyage
   }, []);
 
   if (loading) {

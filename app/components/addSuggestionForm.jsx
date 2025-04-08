@@ -40,7 +40,7 @@ const AddSuggestionForm = (projectId) => {
 
     try {
       const newSuggestionId = await postSuggestion({ suggestionName, price, creator: userInfo.userName, createdAt: new Date() }, projectId);
-      setMessage(`Suggestion ajoutés avec succès : ID: ${newSuggestionId}`);
+      setMessage(`Suggestion ajoutés avec succès !`);
       setSuggestionName('');
       setPrice(0);
       setType('');

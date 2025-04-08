@@ -37,7 +37,7 @@ const CommentSection = ({ suggestionID }) => {
 
     return (
         <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={{ width: '95%' }}>
                 {comments.map(comment => (
                     <View key={comment.id} style={styles.comment}>
                         <Text style={styles.commentCreator}>{comment.creator} à commenté :</Text>
@@ -52,15 +52,15 @@ const CommentSection = ({ suggestionID }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 15,
+        paddingTop: '5%',
         alignItems: 'center',
     },
     comment: {
         backgroundColor: 'rgba(218, 231, 255, 0.48)',
         borderRadius: 20,
-        padding: 10,
-        marginBottom: 10,
-        width: 280,
+        padding: '5%',
+        marginBottom: '3%',
+        width: '100%',
     },
     commentCreator: {
         color: '#5A439A',
