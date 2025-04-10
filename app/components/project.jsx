@@ -1,17 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
 
 const Project = ({ project }) => {
-    const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-        'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
-    });
 
+    //Date affichage
     const formatDate = (ts) => {
         const date = ts.toDate ? ts.toDate() : new Date(Number(ts));
         const day = String(date.getDate()).padStart(2, '0');
@@ -21,8 +16,9 @@ const Project = ({ project }) => {
 
     const router = useRouter();
     const handleNavigation = () => {
-        router.push(`/project/${project.id}`); // Navigue vers la page du projet avec l'ID
+        router.push(`/project/${project.id}`);
     };
+
     return (
         <TouchableOpacity style={styles.container} onPress={handleNavigation}>
             <View style={styles.destination}>

@@ -1,6 +1,5 @@
 import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../../firebase.config";
-import { constructFromSymbol } from "date-fns/constants";
 
 //GET ALL SUGGESTIONS
 export const getSuggestions = async () => {
@@ -23,13 +22,10 @@ export const getSuggestions = async () => {
   return suggestions; 
 };
 
-// GET suggestion (ID)
+// GET SUGGESTION (ID)
 export const getSuggestionById = async (suggestionId) => {
   try {
-    // Référence du document avec l'ID spécifié
     const suggestionRef = doc(db, 'suggestions', suggestionId);
-
-    // Récupération du document
     const snapshot = await getDoc(suggestionRef);
 
     if (!snapshot.exists()) {
@@ -52,7 +48,6 @@ export const postSuggestion = async (suggestionData, projectId) => {
       const docRef = await addDoc(suggestionRef, suggestionData);
       console.log('Suggestion ajoutée avec succès, ID :', docRef.id);
 
-      // Ajoutez l'ID de la suggestion au projet
       const projectRef = doc(db, 'projects', projectId.projectId.trim());
       console.log('projectRef:', projectRef);
       await updateDoc(projectRef, {
@@ -60,7 +55,7 @@ export const postSuggestion = async (suggestionData, projectId) => {
       });
       console.log('ID de la suggestion ajouté au projet avec succès');
 
-      return docRef.id; // Retourne l'ID du document ajouté
+      return docRef.id; 
     }
     catch (error) {
       console.error('Erreur lors de l ajout de la suggestion :', error);
@@ -74,7 +69,7 @@ export const putSuggestion = async (suggestionId, suggestionData) => {
       const suggestionRef = doc(db, 'suggestions', suggestionId.trim());
       const docRef = await updateDoc(suggestionRef, suggestionData);
       console.log('Suggestion modifiée avec succès');
-      return docRef; // Retourne l'ID du document ajouté
+      return docRef; 
     }
     catch (error) {
       console.error('Erreur lors de la modification de la suggestion :', error);
@@ -88,7 +83,7 @@ export const deleteSuggestion = async (suggestionId) => {
     const suggestionRef = doc(db, 'suggestions', suggestionId.trim());
     const docRef = await deleteDoc(suggestionRef);
     console.log('Suggestion supprimée avec succès');
-    return docRef; // Retourne l'ID du document ajouté
+    return docRef; 
   }
   catch (error) {
     console.error('Erreur lors de la suppression de la suggestion :', error);

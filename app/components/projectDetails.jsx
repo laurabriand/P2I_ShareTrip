@@ -1,20 +1,18 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Share } from 'react-native'
 import React, { useEffect, useState } from 'react';
-import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getUserByUID } from '../lib/userServices';
 import { getSuggestionById } from '../lib/suggestionServices';
-import * as Linking from 'expo-linking';
+import { deleteProject } from '../lib/projectServices';
+import { getAuth } from 'firebase/auth';
 
 
 const projectDetails = ({ project }) => {
-    const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-        'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
-    });
+    const auth = getAuth();
+    const user = auth.currentUser;
 
+    //Date affichage
     const formatDate = (ts) => {
         const date = ts.toDate ? ts.toDate() : new Date(Number(ts));
         const day = String(date.getDate()).padStart(2, '0');
@@ -22,6 +20,7 @@ const projectDetails = ({ project }) => {
         return `${day}/${month}`;
     };
 
+    //Users recovery
     const [userNames, setUserNames] = useState([]);
     useEffect(() => {
         const fetchUserNames = async () => {
@@ -44,6 +43,7 @@ const projectDetails = ({ project }) => {
         fetchUserNames();
     }, [project.users]);
 
+    //Activities recovery
     const [activityNames, setActivityNames] = useState([]);
     useEffect(() => {
         const fetchActivityNames = async () => {
@@ -66,30 +66,14 @@ const projectDetails = ({ project }) => {
         fetchActivityNames();
     }, [project.activities]);
 
-    const handleShare = async () => {
-        console.log("Partage en cours...");
+    //Delete project function
+    const handleDeleteProject = async () => {
         try {
-            const deepLink = Linking.createURL(`/invitation/${project.id}`, {
-                queryParams: {
-                    name: project.destination,
-                },
-            });
-
-            const result = await Share.share({
-                message: `Rejoignez le projet "${project.destination}" sur ShareTrip ! Cliquez ici pour en savoir plus : ${deepLink}`,
-            });
-
-            if (result.action === Share.sharedAction) {
-                if (result.activityType) {
-                    console.log('Partagé avec une activité spécifique');
-                } else {
-                    console.log('Partagé');
-                }
-            } else if (result.action === Share.dismissedAction) {
-                console.log('Partage annulé');
-            }
+            await deleteProject(project.id, user.uid);
+            router.push('/(tabs)');
+            console.log('Projet supprimé avec succès');
         } catch (error) {
-            console.error('Erreur lors du partage :', error);
+            console.error('Erreur lors de la suppression du projet :', error);
         }
     };
 
@@ -156,8 +140,8 @@ const projectDetails = ({ project }) => {
                 </View>
 
             </View>
-            <TouchableOpacity style={styles.secondButton} onPress={handleShare}>
-                <Text style={styles.secondButtonText} >Créer un lien de partage</Text>
+            <TouchableOpacity style={styles.secondButton} onPress={handleDeleteProject}>
+                <Text style={styles.secondButtonText} >Quitter le projet</Text>
             </TouchableOpacity>
         </View>
     )

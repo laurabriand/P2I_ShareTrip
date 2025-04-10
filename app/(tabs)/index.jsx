@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
-import { useFonts } from 'expo-font';
 import Project from "../components/project";
 import React, { useEffect, useState } from 'react';
-import { getProjects, getFuturProjectsByUserId } from "../lib/projectServices";
+import { getFuturProjectsByUserId } from "../lib/projectServices";
 import { useRouter } from 'expo-router';
 import { getAuth } from 'firebase/auth';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -12,8 +11,9 @@ export default function Index() {
   const auth = getAuth();
   const user = auth.currentUser;
   const [loading, setLoading] = useState(true);
-  const [projects, setProjects] = useState([]);
 
+  //Projects recovery
+  const [projects, setProjects] = useState([]);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user?.uid) {
@@ -27,13 +27,13 @@ export default function Index() {
           setLoading(false);
         }
       } else {
-        setLoading(false); // même si pas connecté, on sort du chargement
+        setLoading(false);
       }
     });
-
-    return () => unsubscribe(); // nettoyage
+    return () => unsubscribe();
   }, []);
 
+  //Loading screen
   if (loading) {
     return (
       <View style={styles.container}>
@@ -48,6 +48,7 @@ export default function Index() {
     );
   }
 
+  //No projects screen
   if (projects.length === 0) {
     return (
       <View style={styles.container}>
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
   },
   scrollView: {
-    width: '90%', // La ScrollView occupe toute la largeur de son conteneur parent
+    width: '90%',
   },
   empty: {
     color: '#5A439A',

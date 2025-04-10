@@ -1,6 +1,5 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase.config";
-import { add } from "date-fns";
 
 //GET ALL PROJECTS
 export const getProjects = async () => {
@@ -24,22 +23,19 @@ export const getProjects = async () => {
   //GET PROJECT (ID)
   export const getProjectById = async (projectId) => {
     try {
-      // Référence du document avec l'ID spécifié
       const projectRef = doc(db, 'projects', projectId);
-  
-      // Récupération du document
       const snapshot = await getDoc(projectRef);
   
       if (!snapshot.exists()) {
         console.log('No matching document.');
-        return null;  // Retourne null si l'utilisateur n'existe pas
+        return null;  
       }
   
       console.log(snapshot.id, '=>', snapshot.data());
-      return { id: snapshot.id, ...snapshot.data() };  // Retourne les données de l'utilisateur
+      return { id: snapshot.id, ...snapshot.data() };  
     } catch (error) {
       console.error("Erreur lors de la récupération du projet :", error);
-      throw error;  // Propagation de l'erreur pour la gestion en amont
+      throw error;  
     }
   };
 
@@ -81,7 +77,7 @@ export const postProject = async (projectData) => {
       const projectRef = collection(db, 'projects');
       const docRef = await addDoc(projectRef, projectData);
       console.log('Projet ajouté avec succès, ID :', docRef.id);
-      return docRef.id; // Retourne l'ID du document ajouté
+      return docRef.id; 
     }
     catch (error) {
       console.error('Erreur lors de l ajout du projet :', error);
@@ -104,17 +100,23 @@ export const putProject = async (projectId, projectData) => {
   }
   
 //DELETE PROJECT
-export const deleteProject = async (projectId) => {
+export const deleteProject = async (projectId, userUid) => {
   try {
-    const projectRef = collection(db, 'projects', projectId.trim());
-    const docRef = await deleteDoc(projectRef);
-    console.log('Projet supprimé avec succès');
-    return docRef; 
-  }
-  catch (error) {
-    console.error('Erreur lors de la suppression du projet :', error);
+    const projectRef = doc(db, 'projects', projectId.trim());
+    const projectDoc = await getDoc(projectRef);
+    if (!projectDoc.exists()) {
+      console.log('No matching document.');
+      return null;  
+    }
+    const projectData = projectDoc.data();
+    const updatedUsers = projectData.users.filter(user => user !== userUid);
+    await updateDoc(projectRef, { users: updatedUsers });
+    console.log('Utilisateur supprimé du projet avec succès');
+  } catch (error) {
+    console.error('Erreur lors de la suppression de l utilisateur du projet :', error);
     throw error;
   }
+  
 }
 
 // ADD USER TO PROJECT

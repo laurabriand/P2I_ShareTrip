@@ -1,22 +1,17 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Share } from 'react-native'
 import React, { useEffect, useState } from 'react';
-import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getUserByUID } from '../lib/userServices';
 import { getSuggestionById } from '../lib/suggestionServices';
 import { addUserToProject } from '../lib/projectServices';
-import * as Linking from 'expo-linking';
 import { getAuth } from 'firebase/auth';
 
 
 const invitationDetails = ({ project }) => {
-    const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-        'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
-    });
+    const router = useRouter();
 
+    //Date affichage
     const formatDate = (ts) => {
         const date = ts.toDate ? ts.toDate() : new Date(Number(ts));
         const day = String(date.getDate()).padStart(2, '0');
@@ -24,8 +19,7 @@ const invitationDetails = ({ project }) => {
         return `${day}/${month}`;
     };
 
-    const router = useRouter();
-
+    //Users recovery
     const [userNames, setUserNames] = useState([]);
     useEffect(() => {
         const fetchUserNames = async () => {
@@ -47,6 +41,7 @@ const invitationDetails = ({ project }) => {
         fetchUserNames();
     }, [project.users]);
 
+    //Activities recovery
     const [activityNames, setActivityNames] = useState([]);
     useEffect(() => {
         const fetchActivityNames = async () => {
@@ -69,6 +64,7 @@ const invitationDetails = ({ project }) => {
         fetchActivityNames();
     }, [project.activities]);
 
+    //Join project function
     const handleJoin = async () => {
         try {
             const auth = getAuth();

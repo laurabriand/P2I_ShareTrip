@@ -16,8 +16,8 @@ const SignUpScreen = () => {
     const navigation = useNavigation();
     const router = useRouter();
 
+    //Inscription function
     const handleSubmit = async () => {
-
         setLoading(true);
         setError('');
         if (!userName || !email || !password || !confirmPassword) {
@@ -30,13 +30,13 @@ const SignUpScreen = () => {
         }
         try {
             await SignUp(email, password, userName);
+            // Redirect to the invitation screen if the user used a share link to open the app
             const redirectPath = await AsyncStorage.getItem('redirectAfterAuth');
-            console.log('Redirect Path:', redirectPath);
             if (redirectPath) {
-                await AsyncStorage.removeItem('redirectAfterAuth'); // nettoyage
+                await AsyncStorage.removeItem('redirectAfterAuth');
                 router.replace(redirectPath);
             } else {
-                router.replace('/(tabs)'); // fallback
+                router.replace('/(tabs)');
             }
         } catch (err) {
             console.error('Erreur lors de l inscription :', err);

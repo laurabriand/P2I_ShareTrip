@@ -3,14 +3,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";
 import * as Linking from 'expo-linking';
-
+import { useFonts } from "expo-font";
 
 export default function RootLayout() {
   const { user } = useAuth() || {};
+  const [fontsLoaded] = useFonts({
+    'Knewave-Regular': require('../app/assets/fonts/Knewave-Regular.ttf'),
+    'Convergence-Regular': require('../app/assets/fonts/Convergence-Regular.ttf'),
+    'LilitaOne-Regular': require('../app/assets/fonts/LilitaOne-Regular.ttf'),
+  });
   const router = useRouter();
+
+  // Send the user to the first screen if not logged in
+  // and store the initial URL in AsyncStorage (if the user used a share link)
   useEffect(() => {
     if (!user) {
-      router.push("auth/firstScreen"); // Redirection si non connecté
+      router.push("auth/firstScreen");
     }
     const checkInitialUrl = async () => {
       try {
@@ -38,7 +46,6 @@ export default function RootLayout() {
           const path = parsedUrl.path;
 
           if (path) {
-            // Stocke la destination dans AsyncStorage
             await AsyncStorage.setItem('redirectAfterAuth', `/${path}`);
             console.log('Lien stocké :', `/${path}`);
           }
@@ -48,10 +55,7 @@ export default function RootLayout() {
       }
     };
 
-    // Ajoute un écouteur pour les événements d'URL
     const subscription = Linking.addEventListener('url', handleUrl);
-
-    // Nettoie l'écouteur lors du démontage du composant
     return () => subscription.remove();
   }, [user]);
 

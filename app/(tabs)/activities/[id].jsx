@@ -11,6 +11,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 export default function Activities() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
+
+    //Project recovery
     const [project, setProject] = useState(null);
     useEffect(() => {
         if (id) {
@@ -20,6 +22,7 @@ export default function Activities() {
         }
     }, [id]);
 
+    //Suggestions recovery
     const [suggestions, setSuggestions] = useState(null);
     useEffect(() => {
         const fetchSuggestions = async () => {
@@ -29,25 +32,23 @@ export default function Activities() {
                         project.activities.map(async (activityId) => {
                             try {
                                 const suggestion = await getSuggestionById(activityId.trim());
-                                return suggestion; // Retourne l'objet suggestion
+                                return suggestion;
                             } catch (error) {
                                 console.error(`Erreur lors de la récupération de la suggestion avec l'ID ${activityId}:`, error);
-                                return null; // Retourne null en cas d'erreur
+                                return null;
                             }
                         })
                     );
-
-                    // Filtrez les suggestions nulles (en cas d'erreur)
                     setSuggestions(fetchedSuggestions.filter((s) => s !== null));
                 }
             } catch (error) {
                 console.error('Erreur lors de la récupération des suggestions :', error);
             }
         };
-
         fetchSuggestions();
     }, [project]);
 
+    //Loading screen
     if (!project) {
         return (
             <View style={styles.container}>
@@ -56,6 +57,7 @@ export default function Activities() {
         );
     }
 
+    //No suggestions screen
     if (!suggestions) {
         return (
             <View style={styles.container}>
@@ -240,4 +242,3 @@ const styles = StyleSheet.create({
     },
 
 });
-

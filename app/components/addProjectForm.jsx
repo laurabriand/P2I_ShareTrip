@@ -7,7 +7,6 @@ import 'firebase/compat/firestore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { getAuth } from 'firebase/auth';
 
-
 const AddProjectForm = () => {
   const [destination, setDestination] = useState('');
   const [start, setStart] = useState(dayjs());
@@ -19,20 +18,21 @@ const AddProjectForm = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const userUid = user.uid;
-  console.log('userUid:', userUid);
 
+  // Add project function
   const handleAddProject = async () => {
 
     if (!destination || !start || !end) {
       setMessage('Veuillez remplir tous les champs.');
       return;
     }
+    // Convert dayjs objects to Firestore Timestamps
     const startTimestamp = firebase.firestore.Timestamp.fromMillis(start.valueOf());
     const endTimestamp = firebase.firestore.Timestamp.fromMillis(end.valueOf());
+
+    // Initialize activities and users
     const initActivities = [];
     const initUsers = [userUid];
-    console.log('initActivities:', initActivities);
-    console.log('initUsers:', initUsers);
 
     try {
       const newProjectId = await postProject({ destination: destination, startDate: startTimestamp, endDate: endTimestamp, activities: initActivities, users: initUsers, createdAt: new Date() });
@@ -46,6 +46,7 @@ const AddProjectForm = () => {
     }
   };
 
+  // Date picker handler
   const handleStartDateChange = (event, selectedDate) => {
     setShowStartPicker(false);
     if (selectedDate) {
@@ -53,6 +54,7 @@ const AddProjectForm = () => {
     }
   };
 
+  // Date picker handler
   const handleEndDateChange = (event, selectedDate) => {
     setShowEndPicker(false);
     if (selectedDate) {

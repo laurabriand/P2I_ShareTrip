@@ -1,7 +1,5 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useLocalSearchParams } from 'expo-router';
-import { useFonts } from 'expo-font';
-import { useNavigation } from '@react-navigation/native';
 import { getProjectById } from "../../lib/projectServices";
 import ProjectDetails from "../../components/projectDetails";
 import React, { useEffect, useState } from 'react';
@@ -10,14 +8,10 @@ import { useRouter } from 'expo-router';
 
 export default function ProjectPage() {
     const { id } = useLocalSearchParams();
-    const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('../../assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('../../assets/fonts/LilitaOne-Regular.ttf'),
-        'Convergence-Regular': require('../../assets/fonts/Convergence-Regular.ttf'),
-    });
-    const [project, setProject] = useState(null);
     const router = useRouter();
 
+    //Project recovery
+    const [project, setProject] = useState(null);
     useEffect(() => {
         if (id) {
             getProjectById(id)
@@ -25,6 +19,8 @@ export default function ProjectPage() {
                 .catch((err) => console.error('Erreur projet :', err));
         }
     }, [id]);
+
+    //Loading screen
     if (!project) {
         return (
             <View style={styles.container}>

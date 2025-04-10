@@ -8,12 +8,12 @@ import { useEffect } from 'react';
 const AddSuggestionForm = (projectId) => {
   const [suggestionName, setSuggestionName] = useState('');
   const [price, setPrice] = useState(0);
-  const [type, setType] = useState('');
   const [message, setMessage] = useState('');
-  const [userInfo, setUserInfo] = useState(null);
   const auth = getAuth();
   const user = auth.currentUser;
 
+  // User info recovery
+  const [userInfo, setUserInfo] = useState(null);
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (user?.uid) {
@@ -32,6 +32,7 @@ const AddSuggestionForm = (projectId) => {
     fetchUserInfo();
   }, [user]);
 
+  // Add suggestion function
   const handleAddSuggestion = async () => {
     if (!suggestionName || !price) {
       setMessage('Veuillez remplir tous les champs.');
@@ -63,13 +64,12 @@ const AddSuggestionForm = (projectId) => {
       <Text style={styles.label}>Entrez le prix par personne :</Text>
       <TextInput
         placeholder="Prix (en €)"
-        value={price.toString()} // Convertit le prix en chaîne pour l'affichage
+        value={price.toString()} // Convert number to string for TextInput
         onChangeText={(text) => {
-          // Validation pour autoriser uniquement les nombres
-          const numericValue = text.replace(/[^0-9.]/g, ''); // Supprime tout sauf les chiffres et le point
+          const numericValue = text.replace(/[^0-9.]/g, '');
           setPrice(numericValue);
         }}
-        keyboardType="numeric" // Affiche un clavier numérique
+        keyboardType="numeric" // Only allow numeric input
         style={styles.input}
       />
       <Button title="Ajouter la suggestion" onPress={handleAddSuggestion} />

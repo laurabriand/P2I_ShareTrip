@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { SignIn } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { getAuth } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,12 +13,8 @@ const LogInScreen = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [fontsLoaded] = useFonts({
-        'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-        'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-    });
 
-
+    //Connexion function
     const handleLogin = async () => {
         setLoading(true);
         setError('');
@@ -32,17 +27,14 @@ const LogInScreen = () => {
             await SignIn(email, password);
             const auth = getAuth();
             const user = auth.currentUser;
+            // Redirect to the invitation screen if the user used a share link to open the app
             const redirectPath = await AsyncStorage.getItem('redirectAfterAuth');
-            console.log('Redirect Path:', redirectPath);
             if (redirectPath) {
-                await AsyncStorage.removeItem('redirectAfterAuth'); // nettoyage
+                await AsyncStorage.removeItem('redirectAfterAuth');
                 router.replace(redirectPath);
             } else {
-                router.replace('/(tabs)'); // fallback
+                router.replace('/(tabs)');
             }
-
-            console.log('Email:', email);
-            console.log('Password:', password);
         } catch (error) {
             console.error(error);
             if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {

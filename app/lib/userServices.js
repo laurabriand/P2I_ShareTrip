@@ -15,32 +15,29 @@ export const getUsers = async () => {
   snapshot.forEach(doc => {
     const userData = doc.data();
     if (userData.userName) {
-      users.push(userData.userName); // Ajout du userName au tableau
+      users.push(userData.userName); 
     }
   });
 
-  return users; // Retourne la liste des userNames
+  return users; 
 };
 
 // GET USER (ID)
 export const getUserById = async (userId) => {
   try {
-    // Référence du document avec l'ID spécifié
     const userRef = doc(db, 'user', userId);
-
-    // Récupération du document
     const snapshot = await getDoc(userRef);
 
     if (!snapshot.exists()) {
       console.log('No matching document.');
-      return null;  // Retourne null si l'utilisateur n'existe pas
+      return null;
     }
 
     console.log(snapshot.id, '=>', snapshot.data());
-    return { id: snapshot.id, ...snapshot.data() };  // Retourne les données de l'utilisateur
+    return { id: snapshot.id, ...snapshot.data() };  
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur :", error);
-    throw error;  // Propagation de l'erreur pour la gestion en amont
+    throw error; 
   }
 };
 
@@ -74,7 +71,7 @@ export const postUser = async (userData) => {
     const userRef = collection(db, 'user');
     const docRef = await addDoc(userRef, userData);
     console.log('Utilisateur ajouté avec succès, ID :', docRef.id);
-    return docRef.id; // Retourne l'ID du document ajouté
+    return docRef.id; 
   }
   catch (error) {
     console.error('Erreur lors de l ajout de l utilisateur :', error);

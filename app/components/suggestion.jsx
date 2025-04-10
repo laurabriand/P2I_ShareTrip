@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CommentSection from './commentSection';
 import { useRouter } from 'expo-router';
@@ -7,6 +7,8 @@ import { useRouter } from 'expo-router';
 
 const Suggestion = ({ suggestion }) => {
     const router = useRouter();
+
+    //Like and dislike management
     const [likeActive, setLikeActive] = useState(false);
     const [dislikeActive, setDislikeActive] = useState(false);
     const handleLike = () => {
@@ -29,6 +31,7 @@ const Suggestion = ({ suggestion }) => {
 
     const likeButtonStyle = likeActive ? [styles.icon1, styles.activeIcon1] : styles.icon1;
     const dislikeButtonStyle = dislikeActive ? [styles.icon2, styles.activeIcon2] : styles.icon2;
+
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{suggestion.creator} propose : </Text>
@@ -158,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#rgba(55, 119, 50, 0.71)',
     },
     activeIcon2: {
-        backgroundColor: '#rgba(122, 58, 59, 0.71)', // Couleur de fond pour l'état actif
+        backgroundColor: '#rgba(122, 58, 59, 0.71)',
     },
 });
 

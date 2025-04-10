@@ -5,12 +5,13 @@ import { useRouter, usePathname } from 'expo-router';
 
 const Navbar = () => {
     const router = useRouter();
+
+    // Pathname recovery to highlight the active button
     const pathname = usePathname();
     const getColor = (target) => (pathname === target ? '#6200EE' : '#aaa');
 
     return (
         <View style={styles.container}>
-            {/* Bouton pour Projets */}
             <TouchableOpacity style={styles.navItem} onPress={() => router.push('/')}>
                 <Icon
                     name="airplane"
@@ -19,8 +20,6 @@ const Navbar = () => {
                 />
                 <Text style={[styles.navText, { color: getColor('/') }]}>projets</Text>
             </TouchableOpacity>
-
-            {/* Bouton pour Archives */}
             <TouchableOpacity style={styles.navItem} onPress={() => router.push('/archive')}>
                 <Icon
                     name="archive-outline"
@@ -29,8 +28,6 @@ const Navbar = () => {
                 />
                 <Text style={[styles.navText, { color: getColor('/archive') }]}>archives</Text>
             </TouchableOpacity>
-
-            {/* Bouton pour Profil */}
             <TouchableOpacity style={styles.navItem} onPress={() => router.push('/profile')}>
                 <Icon
                     name="person"
@@ -53,7 +50,7 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
     },
     navItem: {
-        alignItems: 'center', // Centre les icônes et les textes horizontalement
+        alignItems: 'center',
     },
     navText: {
         fontSize: 12,

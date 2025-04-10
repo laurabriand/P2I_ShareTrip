@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Icon from "react-native-vector-icons/Ionicons";
 import { useRouter } from 'expo-router';
 import AddProjectForm from "../components/addProjectForm";

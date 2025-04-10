@@ -1,19 +1,16 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
-import { useFonts } from 'expo-font';
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import Project from "../components/project";
 import React, { useEffect, useState } from 'react';
-import { getProjects, getPastProjectsByUserId } from "../lib/projectServices";
-import { useRouter } from 'expo-router';
+import { getPastProjectsByUserId } from "../lib/projectServices";
 import { getAuth } from 'firebase/auth';
 
 export default function Archive() {
-  const router = useRouter();
-
   const auth = getAuth();
   const user = auth.currentUser;
   const [loading, setLoading] = useState(true);
-  const [projects, setProjects] = useState([]);
 
+  //Project recovery
+  const [projects, setProjects] = useState([]);
   useEffect(() => {
     const fetchProjects = async () => {
       if (user?.uid) {
@@ -31,6 +28,7 @@ export default function Archive() {
     fetchProjects();
   }, []);
 
+  //Loading screen
   if (loading) {
     return (
       <View style={styles.container}>
@@ -45,6 +43,7 @@ export default function Archive() {
     );
   }
 
+  //No projects screen
   if (projects.length === 0) {
     return (
       <View style={styles.container}>
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
   },
   scrollView: {
-    width: '90%', // La ScrollView occupe toute la largeur de son conteneur parent
+    width: '90%',
   },
   empty: {
     color: '#5A439A',

@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useFonts } from 'expo-font';
 import { getAuth } from 'firebase/auth';
 import { SignOut } from '../lib/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -8,18 +7,13 @@ import { getUserByUID } from '../lib/userServices';
 import { useState, useEffect } from 'react';
 
 const Profile = () => {
-  const [fontsLoaded] = useFonts({
-    'Knewave-Regular': require('../assets/fonts/Knewave-Regular.ttf'),
-    'LilitaOne-Regular': require('../assets/fonts/LilitaOne-Regular.ttf'),
-    'Convergence-Regular': require('../assets/fonts/Convergence-Regular.ttf'),
-  });
   const auth = getAuth();
   const user = auth.currentUser;
   const navigation = useNavigation();
-  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
+  //User info recovery
+  const [userInfo, setUserInfo] = useState(null);
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (user?.uid) {
@@ -27,8 +21,7 @@ const Profile = () => {
           const userData = await getUserByUID(user.uid);
           setUserInfo(userData);
         } catch (err) {
-          setError('Erreur lors de la récupération des informations utilisateur');
-          console.error(err);
+          console.log('Erreur lors de la récupération des informations utilisateur :', err);
         } finally {
           setLoading(false);
         }
@@ -38,12 +31,12 @@ const Profile = () => {
     fetchUserInfo();
   }, [user]);
 
+  //Diconnect function
   const handleDisconnect = async () => {
     await SignOut();
     navigation.navigate('auth/firstScreen');
     console.log('Déconnexion');
   };
-
 
   return (
     <View style={styles.container}>

@@ -45,10 +45,4 @@ export function SignOut() {
     });
 }
 
-//GET CURRENT USER
-export function getCurrentUser() {
-  const auth = getAuth();
-  const user = auth.currentUser;
-};
-
 export default { SignUp, SignIn, SignOut };

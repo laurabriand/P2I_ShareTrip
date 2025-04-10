@@ -25,10 +25,7 @@ export const getComments = async () => {
   //GET COMMENT (ID)
   export const getCommentById = async (commentId) => {
     try {
-      // Référence du document avec l'ID spécifié
       const commentRef = doc(db, 'comments', commentId);
-  
-      // Récupération du document
       const snapshot = await getDoc(commentRef);
   
       if (!snapshot.exists()) {
@@ -37,10 +34,10 @@ export const getComments = async () => {
       }
   
       console.log(snapshot.id, '=>', snapshot.data());
-      return { id: snapshot.id, ...snapshot.data() };  // Retourne les données de l'utilisateur
+      return { id: snapshot.id, ...snapshot.data() };  
     } catch (error) {
       console.error("Erreur lors de la récupération du commentaire :", error);
-      throw error;  // Propagation de l'erreur pour la gestion en amont
+      throw error;  
     }
   };
 
@@ -77,7 +74,7 @@ export const postComment = async (commentData) => {
     const commentRef = collection(db, 'comments');
     const docRef = await addDoc(commentRef, commentData);
     console.log('Commentaire ajouté avec succès, ID :', docRef.id);
-    return docRef.id; // Retourne l'ID du document ajouté
+    return docRef.id; 
   }
   catch (error) {
     console.error('Erreur lors de l ajout du commentaire :', error);

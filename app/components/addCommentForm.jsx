@@ -8,10 +8,11 @@ import { useEffect } from 'react';
 const AddCommentForm = (suggestionId) => {
   const [text, setText] = useState('');
   const [message, setMessage] = useState('');
-  const [userInfo, setUserInfo] = useState(null);
   const auth = getAuth();
   const user = auth.currentUser;
 
+  // User info recovery
+  const [userInfo, setUserInfo] = useState(null);
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (user?.uid) {
@@ -30,6 +31,7 @@ const AddCommentForm = (suggestionId) => {
     fetchUserInfo();
   }, [user]);
 
+  // Publish comment function
   const handleAddComment = async () => {
     if (!text) {
       setMessage('Veuillez remplir tous les champs.');

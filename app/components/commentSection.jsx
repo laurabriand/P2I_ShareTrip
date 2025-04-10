@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { getCommentsBySuggestionId } from "../lib/commentServices";
 
 const CommentSection = ({ suggestionID }) => {
+
+    //Comment recovery
     const [comments, setComments] = useState(null);
     useEffect(() => {
         const fetchComments = async () => {
@@ -16,6 +18,7 @@ const CommentSection = ({ suggestionID }) => {
         fetchComments();
     }, [suggestionID]);
 
+    //Loading state
     if (!comments) {
         return (
             <View style={styles.container}>
@@ -25,6 +28,8 @@ const CommentSection = ({ suggestionID }) => {
             </View>
         );
     }
+
+    //No comments state
     if (comments.length === 0) {
         return (
             <View style={styles.container}>

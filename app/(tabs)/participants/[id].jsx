@@ -10,7 +10,8 @@ import * as Linking from 'expo-linking';
 export default function Participants() {
     const router = useRouter();
     const { id } = useLocalSearchParams();
-    const [userNames, setUserNames] = useState([]);
+
+    //Project recovery
     const [project, setProject] = useState(null);
     useEffect(() => {
         if (id) {
@@ -20,6 +21,8 @@ export default function Participants() {
         }
     }, [id]);
 
+    //Users recovery
+    const [userNames, setUserNames] = useState([]);
     useEffect(() => {
         const fetchUserNames = async () => {
             if (!project || !project.users) return;
@@ -41,10 +44,11 @@ export default function Participants() {
         fetchUserNames();
     }, [project]);
 
+    //Share function
     const handleShare = async () => {
         console.log("Partage en cours...");
         try {
-            const deepLink = Linking.createURL(`/project/${project.id}`, {
+            const deepLink = Linking.createURL(`/invitation/${project.id}`, {
                 queryParams: {
                     name: project.destination,
                 },
@@ -68,7 +72,7 @@ export default function Participants() {
         }
     };
 
-
+    //Loading screen
     if (!project) {
         return (
             <View style={styles.container}>
@@ -78,6 +82,7 @@ export default function Participants() {
             </View>
         );
     }
+
     return (
         <View style={styles.container}>
             <View style={styles.appName}>
