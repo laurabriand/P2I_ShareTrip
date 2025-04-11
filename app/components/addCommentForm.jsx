@@ -40,7 +40,7 @@ const AddCommentForm = (suggestionId) => {
 
     try {
       const newCommentId = await postComment({ text, creator: userInfo.userName, suggestionId: suggestionId.suggestionId, createdAt: new Date() });
-      setMessage(`Commentaire ajouté avec succès : ${newCommentId}`);
+      setMessage(`Commentaire ajouté avec succès !`);
       setText('');
     } catch (error) {
       setMessage('Erreur lors de l’ajout du commentaire.');

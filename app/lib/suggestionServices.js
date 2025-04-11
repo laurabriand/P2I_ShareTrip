@@ -32,8 +32,6 @@ export const getSuggestionById = async (suggestionId) => {
       console.log('No matching document.');
       return null;  
     }
-
-    console.log(snapshot.id, '=>', snapshot.data());
     return { id: snapshot.id, ...snapshot.data() };  
   } catch (error) {
     console.error("Erreur lors de la récupération de la suggestion :", error);
@@ -46,10 +44,9 @@ export const postSuggestion = async (suggestionData, projectId) => {
     try {
       const suggestionRef = collection(db, 'suggestions');
       const docRef = await addDoc(suggestionRef, suggestionData);
-      console.log('Suggestion ajoutée avec succès, ID :', docRef.id);
+      console.log('Suggestion ajoutée avec succès, ID !');
 
       const projectRef = doc(db, 'projects', projectId.projectId.trim());
-      console.log('projectRef:', projectRef);
       await updateDoc(projectRef, {
         activities: arrayUnion(docRef.id)
       });

@@ -55,7 +55,6 @@ export const getCommentsBySuggestionId = async (suggestionId) => {
 
     snapshot.forEach(doc => {
       const commentData = doc.data();
-      console.log('CommentData:', commentData);
       if (commentData.suggestionId === suggestionId.trim()) {
         comments.push({ id: doc.id, ...commentData }); 
       }
@@ -73,7 +72,7 @@ export const postComment = async (commentData) => {
   try {
     const commentRef = collection(db, 'comments');
     const docRef = await addDoc(commentRef, commentData);
-    console.log('Commentaire ajouté avec succès, ID :', docRef.id);
+    console.log('Commentaire ajouté avec succès !');
     return docRef.id; 
   }
   catch (error) {

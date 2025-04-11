@@ -8,7 +8,6 @@ export function SignUp(email, password, userName) {
     .then((userCredential) => {
       // Signed up 
       const user = userCredential.user;
-      console.log('Utilisateur inscrit :', user.email);
       return postUser({ userName: userName.trim(), email, userUID: user.uid, createdAt: new Date() })
         .then(() => user); })
     .catch((error) => {
@@ -25,7 +24,6 @@ export function SignIn(email, password) {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      console.log('Utilisateur connecté :', user.email);
       return user;
     })
     .catch((error) => {

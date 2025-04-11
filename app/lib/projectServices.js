@@ -30,8 +30,6 @@ export const getProjects = async () => {
         console.log('No matching document.');
         return null;  
       }
-  
-      console.log(snapshot.id, '=>', snapshot.data());
       return { id: snapshot.id, ...snapshot.data() };  
     } catch (error) {
       console.error("Erreur lors de la récupération du projet :", error);
@@ -53,7 +51,6 @@ export const getProjectsByUserId = async (userId) => {
 
   snapshot.forEach(doc => {
     const projectData = doc.data();
-    console.log('ProjectData:', projectData);
     projectData.users.forEach(user => {
       if (user === userId.trim()) {
         projects.push({ id: doc.id, ...projectData }); 
@@ -61,7 +58,6 @@ export const getProjectsByUserId = async (userId) => {
     });
 
   })
-  console.log('Projects:', projects);
   return projects;
 
 } catch (error) {
@@ -76,7 +72,7 @@ export const postProject = async (projectData) => {
     try {
       const projectRef = collection(db, 'projects');
       const docRef = await addDoc(projectRef, projectData);
-      console.log('Projet ajouté avec succès, ID :', docRef.id);
+      console.log('Projet ajouté avec succès !');
       return docRef.id; 
     }
     catch (error) {
@@ -153,9 +149,6 @@ export const getPastProjectsByUserId = async (userId) => {
     snapshot.forEach(doc => {
       const projectData = doc.data();
       const endDate = projectData.endDate?.toDate ? projectData.endDate.toDate() : new Date(projectData.endDate);
-      console.log('Project destination:', projectData.destination);
-      console.log('EndDate:', endDate);
-      console.log('CurrentDate:', new Date());
       projectData.users.forEach(user => {
         if (user === userId.trim() && endDate < new Date()) {
           projects.push({ id: doc.id, ...projectData }); 

@@ -32,8 +32,6 @@ export const getUserById = async (userId) => {
       console.log('No matching document.');
       return null;
     }
-
-    console.log(snapshot.id, '=>', snapshot.data());
     return { id: snapshot.id, ...snapshot.data() };  
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur :", error);
@@ -70,7 +68,7 @@ export const postUser = async (userData) => {
   try {
     const userRef = collection(db, 'user');
     const docRef = await addDoc(userRef, userData);
-    console.log('Utilisateur ajouté avec succès, ID :', docRef.id);
+    console.log('Utilisateur ajouté avec succès !');
     return docRef.id; 
   }
   catch (error) {

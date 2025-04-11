@@ -44,7 +44,6 @@ const AddSuggestionForm = (projectId) => {
       setMessage(`Suggestion ajoutés avec succès !`);
       setSuggestionName('');
       setPrice(0);
-      setType('');
 
     } catch (error) {
       setMessage('Erreur lors de l’ajout de la suggestion.');
